@@ -5,6 +5,7 @@
 bin/
 .apt*
 *code-workspace
+.camel*
 
 # IntelliJ
 .idea

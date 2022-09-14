@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+
+    <!-- CSS ... -->
+    <link rel="stylesheet" href="default.css">
+
+    <title>Votes</title>
+  </head>
+  <body>
+    <div class="container">
+      <h1>Votes</h1>
+
+      <table class="table table-striped table-bordered">
+        <thead>
+          <tr>
+            <th scope="col" class="fit">Position</th>
+            <th scope="col" >Name</th>
+            <th scope="col" class="fit">Count</th>
+          </tr>
+        </thead>
+
+        {#if votes.size == 0} 
+        <tr>
+          <td colspan="4">No data found.</td>
+        </tr>
+        {#else}
+
+        
+        {#for vote in votes}  
+        <tr>
+          <th scope="row" class="position"></th>
+          <td>
+            {vote.fullname}      
+          </td>
+          <td>
+            {vote.counter}   
+          </td>
+        </tr>
+        {/for}
+        {/if}
+      </table>
+    </div>
+  </body>
+</html>

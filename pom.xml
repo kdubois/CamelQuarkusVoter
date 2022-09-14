@@ -9,5 +9,6 @@
   <modules>
     <module>producer</module>
     <module>processor</module>
+    <module>results</module>
   </modules>
 </project>
