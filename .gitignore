@@ -9,6 +9,7 @@ bin/
 configmap.yaml
 secrets.yaml
 
+
 # IntelliJ
 .idea
 *.ipr
