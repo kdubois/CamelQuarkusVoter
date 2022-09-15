@@ -6,6 +6,8 @@ bin/
 .apt*
 *code-workspace
 .camel*
+configmap.yaml
+secrets.yaml
 
 # IntelliJ
 .idea

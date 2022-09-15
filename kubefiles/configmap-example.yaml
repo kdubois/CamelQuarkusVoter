@@ -1,0 +1,7 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: appconfig
+data:
+  kafka.bootstrap.servers: "EXAMPLE-cluster-kafka-bootstrap:9092"
+  consumer.url: "YOURURL/favstackxform"

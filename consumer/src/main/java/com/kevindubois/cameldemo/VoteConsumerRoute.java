@@ -28,6 +28,7 @@ public class VoteConsumerRoute extends RouteBuilder {
             .to("direct:sendRequest");
         
         from("direct:sendRequest")
+            .log("Sending message to kafka topic: {{kafka.topic.name}}")
             .to("kafka:{{kafka.topic.name}}");
 
         // optional, just reads the message back from the kafka topic. 

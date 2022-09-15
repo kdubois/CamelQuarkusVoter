@@ -12,17 +12,17 @@ import io.quarkus.qute.Template;
 import io.quarkus.qute.TemplateInstance;
 
 @Path("/form")
-public class FormResoure {
+public class FormResource {
 
     @Inject
     Template form;
 
-    @ConfigProperty(name = "formurl")
-    String formurl;
+    @ConfigProperty(name = "consumer.url")
+    String url;
     
     @GET
     @Produces(MediaType.TEXT_HTML)
     public TemplateInstance showForm() {
-        return form.data("formurl", formurl);
+        return form.data("formurl", url);
     }
 }
