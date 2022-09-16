@@ -1,17 +1,22 @@
 package com.kevindubois.cameldemo.model;
 
+import java.util.List;
+
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Named;
+import javax.persistence.Cacheable;
 import javax.persistence.Entity;
 import org.jboss.logging.Logger;
 
 import io.quarkus.hibernate.orm.panache.PanacheEntity;
+import io.quarkus.panache.common.Sort;
 import io.quarkus.runtime.annotations.RegisterForReflection;
 
 @Entity
 @Named("vote")
 @ApplicationScoped
 @RegisterForReflection
+@Cacheable
 public class Vote extends PanacheEntity{
 
     public String stackname;
@@ -28,8 +33,12 @@ public class Vote extends PanacheEntity{
                 log.info(find("stackname = ?1", stackname).firstResult().toString());
             } else {
                 log.error("No rows updated for stackname " + stackname);
-            }              
-   
+            } 
+    }
+
+    public List<Vote> orderedList() {
+        Sort sort = Sort.descending("counter");
+        return Vote.listAll(sort);
     }
 
     @Override

@@ -6,6 +6,11 @@ public class VoteConsumerRoute extends RouteBuilder {
     @Override
     public void configure() throws Exception {
 
+        restConfiguration()
+        .enableCORS(true)
+        .corsHeaderProperty("Access-Control-Allow-Headers", "Origin, Accept, X-Requested-With, Content-Type, Access-Control-Request-Method, Access-Control-Request-Headers,CustomHeader1, CustomHeader2")
+        ;
+
         // accept post requests from a /favstack endpoint
         rest("/favstackxform")  
             .post()    
@@ -28,7 +33,7 @@ public class VoteConsumerRoute extends RouteBuilder {
             .to("direct:sendRequest");
         
         from("direct:sendRequest")
-            .log("Sending message to kafka topic: {{kafka.topic.name}}")
+            .log("Sending message to kafka topic: {{kafka.topic.name}}")            
             .to("kafka:{{kafka.topic.name}}");
 
         // optional, just reads the message back from the kafka topic. 

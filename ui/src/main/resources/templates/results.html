@@ -7,40 +7,70 @@
     <link rel="stylesheet" href="default.css">
 
     <title>Votes</title>
+
+    <script src="https://code.jquery.com/jquery-3.6.1.min.js"></script>
+    <script>  
+    $( document ).ready(function() {
+         loadResults();
+    });  
+     
+    function buttonClick(stackname){
+      
+            console.log( "vote cast for " + stackname);
+
+            $.post({
+              url: "{config:property("consumer.url")}/favstackxform",
+              data: {"stackname": stackname},
+              type: "POST",
+              crossDomain: true,
+              dataType: "json",
+            })
+            .done(function(json) {
+              loadResults();
+            });
+        
+    }
+
+     function loadResults() {
+        $.getJSON( "{config:property("processor.url")}/getresults", {
+          format: "jsonp"
+        }, function(data){
+            $("#votetable tbody").html("<tr></tr>");
+            $(data).each(function(){
+              
+               $("#votetable tbody").append(
+                 '<tr id="'+this.stackname+'">'+
+                 '<th scope="row" class="position"></th>'+
+                 '<td class="fullname">'+this.fullname+'</td>'+
+                 '<td class="counter">'+this.counter+'</td>'+
+                 '<td class="vote">'+
+                 '<button class="votebutton" id="'+this.fullname+'" name="'+this.stackname+'" onclick="window.buttonClick(\''+this.stackname+'\')">'+
+                 'Vote for '+this.fullname+'!</button></td></tr>'
+               );
+            })
+        });
+        
+     }
+    </script>
   </head>
   <body>
     <div class="container">
       <h1>Votes</h1>
 
-      <table class="table table-striped table-bordered">
+      <table class="table table-striped table-bordered" id="votetable">
         <thead>
           <tr>
             <th scope="col" class="fit">Position</th>
             <th scope="col" >Name</th>
             <th scope="col" class="fit">Count</th>
+            <th></th>
           </tr>
         </thead>
-
-        {#if votes.size == 0} 
-        <tr>
-          <td colspan="4">No data found.</td>
-        </tr>
-        {#else}
-
-        
-        {#for vote in votes}  
-        <tr>
-          <th scope="row" class="position"></th>
-          <td>
-            {vote.fullname}      
-          </td>
-          <td>
-            {vote.counter}   
-          </td>
-        </tr>
-        {/for}
-        {/if}
+        <tbody>
+       
+        </tbody>
       </table>
     </div>
+
   </body>
 </html>
