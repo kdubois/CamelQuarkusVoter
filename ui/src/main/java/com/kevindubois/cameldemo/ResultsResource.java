@@ -2,7 +2,6 @@ package com.kevindubois.cameldemo;
 
 
 import javax.inject.Inject;
-import org.eclipse.microprofile.config.inject.ConfigProperty;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
@@ -12,7 +11,6 @@ import javax.ws.rs.core.MediaType;
 
 import io.quarkus.qute.Template;
 import io.quarkus.qute.TemplateInstance;
-
 
 
 @Path("/result")

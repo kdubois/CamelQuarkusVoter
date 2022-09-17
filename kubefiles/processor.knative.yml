@@ -1,0 +1,99 @@
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  annotations:
+    app.quarkus.io/commit-id: 79187f7087f9c61b7992048c0952aeb1bf07fa22
+    app.quarkus.io/build-timestamp: 2022-09-16 - 11:41:52 +0000
+  labels:
+    app.kubernetes.io/name: cameldemo-processor
+    app.kubernetes.io/version: 1.0.0-SNAPSHOT
+  name: cameldemo-processor
+---
+apiVersion: serving.knative.dev/v1
+kind: Service
+metadata:
+  annotations:
+    app.quarkus.io/commit-id: 79187f7087f9c61b7992048c0952aeb1bf07fa22
+    app.quarkus.io/build-timestamp: 2022-09-16 - 11:41:52 +0000
+  labels:
+    app.kubernetes.io/name: cameldemo-processor
+    app.kubernetes.io/version: 1.0.0-SNAPSHOT
+  name: cameldemo-processor
+spec:
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: cameldemo-processor
+        app.kubernetes.io/version: 1.0.0-SNAPSHOT
+      annotations:
+        autoscaling.knative.dev/target: '1'
+        autoscaling.knative.dev/targetUtilizationPercentage: '70'
+        autoscaling.knative.dev/window: 60s
+    spec:
+      containerConcurrency: 1
+      containers:
+        - image: quay.io/kevindubois/cameldemo-processor
+          livenessProbe:
+            failureThreshold: 3
+            httpGet:
+              path: /q/health/live
+              port: null
+              scheme: HTTP
+            initialDelaySeconds: 0
+            periodSeconds: 30
+            successThreshold: 1
+            timeoutSeconds: 10
+          imagePullPolicy: IfNotPresent
+          name: cameldemo-processor
+          ports:
+            - containerPort: 8080
+              name: http1
+              protocol: TCP
+          readinessProbe:
+            failureThreshold: 3
+            httpGet:
+              path: /q/health/ready
+              port: null
+              scheme: HTTP
+            initialDelaySeconds: 0
+            periodSeconds: 30
+            successThreshold: 1
+            timeoutSeconds: 10
+      serviceAccountName: cameldemo-processor
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: view-secrets
+rules:
+  - apiGroups:
+      - ""
+    resources:
+      - secrets
+    verbs:
+      - get
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: cameldemo-processor-view
+roleRef:
+  kind: ClusterRole
+  apiGroup: rbac.authorization.k8s.io
+  name: view
+subjects:
+  - kind: ServiceAccount
+    name: cameldemo-processor
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: cameldemo-processor-view-secrets
+roleRef:
+  kind: Role
+  apiGroup: rbac.authorization.k8s.io
+  name: view-secrets
+subjects:
+  - kind: ServiceAccount
+    name: cameldemo-processor
