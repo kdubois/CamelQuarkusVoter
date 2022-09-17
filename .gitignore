@@ -8,6 +8,7 @@ bin/
 .camel*
 configmap.yaml
 secrets.yaml
+application-dev.properties
 
 
 # IntelliJ
