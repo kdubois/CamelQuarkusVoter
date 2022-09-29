@@ -1,4 +1,4 @@
-package com.kevindubois.cameldemo.producer;
+package com.kevindubois.cameldemo;
 
 import io.quarkus.test.junit.QuarkusIntegrationTest;
 

@@ -18,6 +18,8 @@ public class ConsumeFromRestRoute extends RouteBuilder {
                 .log("Sending message to kafka topic: {{kafka.topic.name}}")
                 .to("kafka:{{kafka.topic.name}}");
 
+
+
         // accept post requests in x-www-form-urlencoded from a /favstackxform endpoint
         rest("/favstackxform")
                 .post()
@@ -31,6 +33,8 @@ public class ConsumeFromRestRoute extends RouteBuilder {
                 .marshal().json()
                 .log("After marshalling the body is now ${body}")
                 .to("direct:sendRequest");
+
+                
 
         restConfiguration()
                 .enableCORS(true)
