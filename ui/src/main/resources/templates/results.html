@@ -13,6 +13,7 @@
     <script>  
     $( document ).ready(function() {
          loadResults();
+         setInterval(loadResults(), 1000);
     });  
      
     function buttonClick(stackname){
@@ -25,9 +26,6 @@
               type: "POST",
               crossDomain: true,
               dataType: "json",
-            })
-            .done(function(json) {
-              loadResults();
             });
         
     }

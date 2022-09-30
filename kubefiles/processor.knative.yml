@@ -27,6 +27,7 @@ spec:
         app.kubernetes.io/name: cameldemo-processor
         app.kubernetes.io/version: 1.0.0-SNAPSHOT
       annotations:
+        autoscaling.knative.dev/minScale: '1'
         autoscaling.knative.dev/target: '1'
         autoscaling.knative.dev/targetUtilizationPercentage: '70'
         autoscaling.knative.dev/window: 60s
