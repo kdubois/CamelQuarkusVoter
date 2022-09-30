@@ -12,9 +12,10 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js"></script>
     <script>  
     $( document ).ready(function() {
-         loadResults();
-         setInterval(loadResults(), 1000);
+         loadResults();         
     });  
+
+    setInterval(() => { loadResults(); }, 1000);
      
     function buttonClick(stackname){
       
@@ -60,11 +61,15 @@
               data: {
                 labels: xValues,
                 datasets: [{
+                  label: 'Fav Stack',
                   backgroundColor: barColors,
                   data: yValues
                 }]
               },
-              options: {}
+              options: {
+                responsive: true,
+                animation: false
+              }
             })
         }); 
 
@@ -74,7 +79,7 @@
   </head>
   <body>
     <div class="container">
-      <h1>Which Stack wins?</h1>
+      <h1>Who wins?</h1>
 
       <table class="table table-striped table-bordered" id="votetable">
         <thead>
@@ -90,7 +95,7 @@
       </table>
     </div>
 
-    <canvas id="myChart" style="width:100%;max-width:700px"></canvas>
+    <canvas id="myChart" style="width:100%; max-width:50em"></canvas>
 
   </body>
 </html>

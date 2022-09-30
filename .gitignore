@@ -10,6 +10,8 @@ configmap.yaml
 secrets.yaml
 application-dev.properties
 application-test.properties
+jmeter.log
+
 
 
 # IntelliJ
