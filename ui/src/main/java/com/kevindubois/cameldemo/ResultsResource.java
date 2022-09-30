@@ -13,7 +13,7 @@ import io.quarkus.qute.Template;
 import io.quarkus.qute.TemplateInstance;
 
 
-@Path("/result")
+@Path("/")
 public class ResultsResource {
 
     @Inject

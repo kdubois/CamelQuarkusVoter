@@ -11,7 +11,7 @@ public class ResultsResourceTest {
     @Test
     public void testHelloEndpoint() {
         given()
-          .when().get("/result")
+          .when().get("/")
           .then()
              .statusCode(200);
     }
