@@ -46,22 +46,23 @@ Anatomy
 
 The application is composed of the following components:
 
+### UI
+The _ui_ application displays a list of java stacks/frameworks that you can vote for by clicking the respective button next to it.  This action calls the _ingester_ app.  The page also displays a bar chart of the results so far.  The app is built with Quarkus Qute templating and some crappy javascript/jquery code :P
+
 ### Ingester
 
-The _ingester_ application receives requests from the user (via HTTP) and forwards the requests to the Kafka broker.
+The _ingester_ Camel Quarkus application receives requests from the user (via HTTP) and forwards the requests to the Kafka broker.
 The main component of the application:
 
 * `RestToCamelRoute` : Camel route that receives a rest call and forwards it on to a Kafka broker
 
 ### Processor
 
-The _processor_ application receives the vote requests from Kafka, processes them, and writes results into the `votesdb` Postgres DB table.
+The _processor_ Camel Quarkus application receives the vote requests from Kafka, processes them, and writes results into the `votesdb` Postgres DB table.  As of right now it also returns the results through a /getresults endpoint.
 The application has the following Camel Routes:
 
 * `processor/VotesRoute` consumes messages from a kafka topic (in json format), extracts the value of 'stackname' and increments the counter of the java stack that matches with this stackname.
 * `RestRoute` returns data from the votes table in json format
-
-
 
 Running in native
 -----------------
@@ -75,6 +76,7 @@ mvn package -Pnative
 As you are running in _prod_ mode, you need a Kafka cluster.
 
 ## Running On Openshift
+
 -----------------------
 
 1. Create a new openshift project 'cameldemo' (if you use a different name, make sure to update the respective application.properties files)
