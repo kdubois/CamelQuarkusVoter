@@ -75,8 +75,7 @@ mvn package -Pnative
 
 As you are running in _prod_ mode, you need a Kafka cluster.
 
-## Running On Openshift
-
+Running On Openshift
 -----------------------
 
 1. Create a new openshift project 'cameldemo' (if you use a different name, make sure to update the respective application.properties files)
