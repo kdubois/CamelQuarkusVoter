@@ -4,37 +4,35 @@ kind: ServiceAccount
 metadata:
   annotations:
     app.quarkus.io/commit-id: 79187f7087f9c61b7992048c0952aeb1bf07fa22
-    app.quarkus.io/build-timestamp: 2022-09-16 - 11:40:41 +0000
+    app.quarkus.io/build-timestamp: 2022-09-16 - 11:41:52 +0000
   labels:
-    app.kubernetes.io/name: cameldemo-ingester
+    app.kubernetes.io/name: cameldemo-processor
     app.kubernetes.io/version: 1.0.0-SNAPSHOT
-  name: cameldemo-ingester
+  name: cameldemo-processor
 ---
 apiVersion: serving.knative.dev/v1
 kind: Service
 metadata:
   annotations:
     app.quarkus.io/commit-id: 79187f7087f9c61b7992048c0952aeb1bf07fa22
-    app.quarkus.io/build-timestamp: 2022-09-16 - 11:40:41 +0000
+    app.quarkus.io/build-timestamp: 2022-09-16 - 11:41:52 +0000
   labels:
-    app.kubernetes.io/name: cameldemo-ingester
+    app.kubernetes.io/name: cameldemo-processor
     app.kubernetes.io/version: 1.0.0-SNAPSHOT
-  name: cameldemo-ingester
+  name: cameldemo-processor
 spec:
   template:
     metadata:
       labels:
-        app.kubernetes.io/name: cameldemo-ingester
+        app.kubernetes.io/name: cameldemo-processor
         app.kubernetes.io/version: 1.0.0-SNAPSHOT
       annotations:
-        autoscaling.knative.dev/target: '1'
-        autoscaling.knative.dev/targetUtilizationPercentage: '70'
-        autoscaling.knative.dev/window: 60s
+        autoscaling.knative.dev/minScale: '1'
+        autoscaling.knative.dev/maxScale: '1'
     spec:
-      containerConcurrency: 1
+      containerConcurrency: 0
       containers:
-        - image: quay.io/kevindubois/cameldemo-ingester
-          imagePullPolicy: IfNotPresent
+        - image: quay.io/kevindubois/cameldemo-processor
           livenessProbe:
             failureThreshold: 3
             httpGet:
@@ -45,7 +43,8 @@ spec:
             periodSeconds: 30
             successThreshold: 1
             timeoutSeconds: 10
-          name: cameldemo-ingester
+          imagePullPolicy: IfNotPresent
+          name: cameldemo-processor
           ports:
             - containerPort: 8080
               name: http1
@@ -60,7 +59,7 @@ spec:
             periodSeconds: 30
             successThreshold: 1
             timeoutSeconds: 10
-      serviceAccountName: cameldemo-ingester
+      serviceAccountName: cameldemo-processor
 ---
 apiVersion: rbac.authorization.k8s.io/v1
 kind: Role
@@ -77,23 +76,23 @@ rules:
 apiVersion: rbac.authorization.k8s.io/v1
 kind: RoleBinding
 metadata:
-  name: cameldemo-ingester-view
+  name: cameldemo-processor-view
 roleRef:
   kind: ClusterRole
   apiGroup: rbac.authorization.k8s.io
   name: view
 subjects:
   - kind: ServiceAccount
-    name: cameldemo-ingester
+    name: cameldemo-processor
 ---
 apiVersion: rbac.authorization.k8s.io/v1
 kind: RoleBinding
 metadata:
-  name: cameldemo-ingester-view-secrets
+  name: cameldemo-processor-view-secrets
 roleRef:
   kind: Role
   apiGroup: rbac.authorization.k8s.io
   name: view-secrets
 subjects:
   - kind: ServiceAccount
-    name: cameldemo-ingester
+    name: cameldemo-processor
