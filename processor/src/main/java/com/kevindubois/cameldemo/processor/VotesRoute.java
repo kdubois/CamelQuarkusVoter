@@ -19,7 +19,7 @@ public class VotesRoute extends RouteBuilder{
         //         .log("Message sent correctly to the topic! : \"${body}\" "); 
 
 
-        from("kafka:{{kafka.topic.name}}?autoOffsetReset=earliest")
+        from("kafka:{{kafka.topic.name}}")
             .routeId("FromKafkaToDB")            
             .log("Received message from Kafka: \"${body}\"")
             .unmarshal().json(JsonLibrary.Jackson, Response.class)     
