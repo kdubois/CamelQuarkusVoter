@@ -2,7 +2,7 @@ package com.kevindubois.cameldemo;
 
 import org.apache.camel.builder.RouteBuilder;
 
-public class ConsumeFromRestRoute extends RouteBuilder {
+public class RestToCamelRoute extends RouteBuilder {
 
     @Override
     public void configure() throws Exception {
@@ -15,6 +15,7 @@ public class ConsumeFromRestRoute extends RouteBuilder {
                 .to("direct:sendRequest");
 
         from("direct:sendRequest")
+                .routeId("sendToKafka")
                 .log("Sending message to kafka topic: {{kafka.topic.name}}")
                 .to("kafka:{{kafka.topic.name}}");
 
@@ -29,6 +30,7 @@ public class ConsumeFromRestRoute extends RouteBuilder {
 
         // transform to json
         from("direct:processRequest")
+                .routeId("marshallToJson")
                 .log("The body is ${body}")
                 .marshal().json()
                 .log("After marshalling the body is now ${body}")

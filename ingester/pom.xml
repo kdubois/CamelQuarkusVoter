@@ -7,7 +7,7 @@
     <artifactId>cameldemo</artifactId>
     <version>1.0.0-SNAPSHOT</version>
   </parent>
-  <artifactId>cameldemo-consumer</artifactId>
+  <artifactId>cameldemo-ingester</artifactId>
   <version>1.0.0-SNAPSHOT</version>
   <dependencyManagement>
     <dependencies>

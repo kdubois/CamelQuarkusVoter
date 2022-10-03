@@ -17,7 +17,7 @@ public class FormResource {
     @Inject
     Template form;
 
-    @ConfigProperty(name = "consumer.url")
+    @ConfigProperty(name = "ingester.url")
     String url;
     
     @GET

@@ -7,7 +7,7 @@ import org.junit.jupiter.api.Test;
 import io.quarkus.test.junit.QuarkusTest;
 
 @QuarkusTest
-public class VoteConsumerRouteTest {
+public class RestToCamelRouteTest {
 
     @Test
     void testRoute() {

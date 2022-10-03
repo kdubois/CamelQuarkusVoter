@@ -4,5 +4,5 @@ metadata:
   name: appconfig
 data:
   kafka.bootstrap.servers: "EXAMPLE-cluster-kafka-bootstrap:9092"
-  consumer.url: "YOUR_CONSUMER_URL"
+  ingester.url: "YOUR_CONSUMER_URL"
   processor.url: "YOUR_PROCESSOR_URL"

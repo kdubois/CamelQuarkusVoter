@@ -22,7 +22,7 @@
             console.log( "vote cast for " + stackname);
 
             $.post({
-              url: "{config:property("consumer.url")}/favstackxform",
+              url: "{config:property("ingester.url")}/favstackxform",
               data: {"stackname": stackname},
               type: "POST",
               crossDomain: true,

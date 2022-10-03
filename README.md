@@ -1,18 +1,26 @@
 Votes Processor
 ========================
 
-This project illustrates how Camel Quarkus applications can leverage Quarkus native builds and interact seamlessly with Apache Kafka and Knative Serving
+This demo project illustrates how Camel Quarkus applications can leverage Quarkus native builds and interact seamlessly with Apache Kafka and Knative Serving
 
-## Start the application
+Application Architecture
+------------------------
 
-The application is composed of 3 applications communicating through Rest and Kafka and consuming a database
+The application is composed of 4 applications that communicate through Rest and Kafka and consume a database
 
-The first (UI) application features a form to submit your vote for your favorite Java stack.  
-It sends the result to a second application with a rest Camel route which is designed to scale out rapidly using Knative and which will in turn forward the votes to a Kafka topic.
-The 3rd application ingests the Kafka messages and updates the database accordingly. (eg. if someone voted 'quarkus', the counter for quarkus would be incremented by 1)
-The first application also hosts the results page.
+![Architecture](architecture.jpeg)
 
-They can be started in dev mode using:
+The UI application features a, well, UI, that shows the results of a poll and a form to vote for your favorite Java stack.
+When you vote, a REST POST event gets sent to the 'ingester' app, which will translate the result and add it to a Kafka topic.  This app is designed to scale out rapidly with Knative so that it can handle bursts of requests.  
+The 3rd application (processor) consumes the Kafka messages at its own pace and updates the database accordingly. (eg. if someone voted 'quarkus', the counter for quarkus would be incremented by 1)
+The 'retriever' application (currently embedded in the processor app) has a REST GET endpoint to get the results from the DB.  
+
+Running the Application locally in Dev Mode
+-------------------------------------------
+
+You can run the entire application on your local machine in Quarkus dev mode.  As long as you have Docker/Podman running on your machine, Quarkus will take care of spinning up Dev Services (basically a containerized mock) for your database and Kafka, so all you need to worry about is running the applications.  Nice huh? :)
+
+Either start each process in a separate terminal as shown below; or if you want to just start the entire thing in one go, you can run `./devmode.sh`
 
 ```bash
 mvn -f ui quarkus:dev
@@ -21,7 +29,7 @@ mvn -f ui quarkus:dev
 and in another terminal:
 
 ```bash
-mvn -f consumer quarkus:dev
+mvn -f ingester quarkus:dev
 ```
 
 and in yet another terminal:
@@ -30,23 +38,22 @@ and in yet another terminal:
 mvn -f processor quarkus:dev
 ```
 
-_NOTE_: Quarkus Dev Services starts a Kafka broker AND Postgresql database for you automatically.
-
-Then, open your browser at `http://localhost:8080/result.html`.
+Then, open your browser at `http://localhost:8080`.
 You can send requests and observe the votes table changing (asynchronously).
 
-## Anatomy
+Anatomy
+--------
 
 The application is composed of the following components:
 
-#### Consumer
+### Ingester
 
-The _consumer_ application receives requests from the user (via HTTP) and forwards the requests to the Kafka broker.
+The _ingester_ application receives requests from the user (via HTTP) and forwards the requests to the Kafka broker.
 The main component of the application:
 
-* `ConsumeFromRestRoute` : Camel route that receives a rest call and forwards it on to a Kafka broker
+* `RestToCamelRoute` : Camel route that receives a rest call and forwards it on to a Kafka broker
 
-#### Processor
+### Processor
 
 The _processor_ application receives the vote requests from Kafka, processes them, and writes results into the `votesdb` Postgres DB table.
 The application has the following Camel Routes:
@@ -54,9 +61,10 @@ The application has the following Camel Routes:
 * `processor/VotesRoute` consumes messages from a kafka topic (in json format), extracts the value of 'stackname' and increments the counter of the java stack that matches with this stackname.
 * `RestRoute` returns data from the votes table in json format
 
-The connection to Kafka should be configured in the kubefiles/configmap.yaml file
 
-## Running in native
+
+Running in native
+-----------------
 
 You can compile the respective applications into a native binary using:
 
@@ -67,6 +75,7 @@ mvn package -Pnative
 As you are running in _prod_ mode, you need a Kafka cluster.
 
 ## Running On Openshift
+-----------------------
 
 1. Create a new openshift project 'cameldemo' (if you use a different name, make sure to update the respective application.properties files)
 1. Install the Openshift Serverless (Knative) Operator

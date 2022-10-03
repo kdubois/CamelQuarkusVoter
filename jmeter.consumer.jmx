@@ -12,11 +12,11 @@
       <stringProp name="TestPlan.user_define_classpath"></stringProp>
     </TestPlan>
     <hashTree>
-      <Arguments guiclass="ArgumentsPanel" testclass="Arguments" testname="CamelDemo Consumer" enabled="true">
+      <Arguments guiclass="ArgumentsPanel" testclass="Arguments" testname="CamelDemo Ingester" enabled="true">
         <collectionProp name="Arguments.arguments">
           <elementProp name="url" elementType="Argument">
             <stringProp name="Argument.name">url</stringProp>
-            <stringProp name="Argument.value">https://cameldemo-consumer-devoxx.apps.ocp4.redhat.arrowlabs.be/favstack</stringProp>
+            <stringProp name="Argument.value">https://cameldemo-ingester-devoxx.apps.ocp4.redhat.arrowlabs.be/favstack</stringProp>
             <stringProp name="Argument.metadata">=</stringProp>
           </elementProp>
           <elementProp name="contentType" elementType="Argument">
