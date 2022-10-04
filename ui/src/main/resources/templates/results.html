@@ -38,19 +38,21 @@
             $("#votetable tbody").html("<tr></tr>");
             var xValues = [];
             var yValues = [];
-
+            var i = 1;
             $(data).each(function(){
               
                $("#votetable tbody").append(
                  '<tr id="'+this.stackname+'">'+
-                 '<th scope="row" class="position"></th>'+
-                 '<td class="fullname">'+this.fullname+'</td>'+
+                 '<td data-label="Position:&nbsp; " class="position">'+i+'</td>'+
+                 '<td data-label="Name:&nbsp; " class="fullname">'+this.fullname+'</td>'+
+                 '<td data-label="Count:&nbsp; " class="counter">'+this.counter+'</td>'+
                  '<td class="vote">'+
-                 '<button class="votebutton" id="'+this.fullname+'" name="'+this.stackname+'" onclick="window.buttonClick(\''+this.stackname+'\')">'+
-                 'Vote for '+this.fullname+'!</button></td></tr>'
+                 '<div class="votebutton btn-one" id="'+this.fullname+'" name="'+this.stackname+'" onclick="window.buttonClick(\''+this.stackname+'\')"><span>'+
+                 'Vote for '+this.fullname+'!</span></div></td></tr>'
                );
                xValues.push(this.fullname);
                yValues.push(this.counter);
+               i++;
             });
 
 
@@ -86,10 +88,31 @@
           <tr>
             <th scope="col" class="fit">Position</th>
             <th scope="col" >Name</th>
+            <th scope="col" class="fit">Count</th>
             <th></th>
           </tr>
         </thead>
         <tbody>
+          {#if votes.size == 0} 
+          <tr>
+            <td colspan="4">No data found.</td>
+          </tr>
+          {#else}
+
+          
+          {#for vote in votes}  
+          <tr id="{vote.stackname}">
+            <td data-label="Position:&nbsp;"scope="row" class="position"></td>
+            <td data-label="Name:&nbsp;" class="fullname">{vote.fullname}</td>
+            <td data-label="Count: &nbsp;" class="counter">{vote.counter}</td>
+            <td class="vote">
+              <button class="votebutton" id="{vote.stackname}+'" name="{vote.stackname}" onclick="window.buttonClick('{vote.stackname}')">
+                 Vote for {vote.fullname}!
+              </button>
+            </td>
+          </tr>          
+          {/for}
+          {/if}
        
         </tbody>
       </table>
