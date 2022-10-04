@@ -10,74 +10,7 @@
 
     <script src="https://code.jquery.com/jquery-3.6.1.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js"></script>
-    <script>  
-    $( document ).ready(function() {
-         loadResults();         
-    });  
-
-    setInterval(() => { loadResults(); }, 1000);
-     
-    function buttonClick(stackname){
-      
-            console.log( "vote cast for " + stackname);
-
-            $.post({
-              url: "{config:property("ingester.url")}/favstackxform",
-              data: {"stackname": stackname},
-              type: "POST",
-              crossDomain: true,
-              dataType: "json",
-            });
-        
-    }
-
-     function loadResults() {
-        $.getJSON( "{config:property("processor.url")}/getresults", {
-          format: "jsonp"
-        }, function(data){
-            $("#votetable tbody").html("<tr></tr>");
-            var xValues = [];
-            var yValues = [];
-            var i = 1;
-            $(data).each(function(){
-              
-               $("#votetable tbody").append(
-                 '<tr id="'+this.stackname+'">'+
-                 '<td data-label="Position:&nbsp; " class="position">'+i+'</td>'+
-                 '<td data-label="Name:&nbsp; " class="fullname">'+this.fullname+'</td>'+
-                 '<td data-label="Count:&nbsp; " class="counter">'+this.counter+'</td>'+
-                 '<td class="vote">'+
-                 '<div class="votebutton btn-one" id="'+this.fullname+'" name="'+this.stackname+'" onclick="window.buttonClick(\''+this.stackname+'\')"><span>'+
-                 'Vote for '+this.fullname+'!</span></div></td></tr>'
-               );
-               xValues.push(this.fullname);
-               yValues.push(this.counter);
-               i++;
-            });
-
-
-            var barColors = ["red", "green","blue","orange","brown"];
-
-            new Chart("myChart", {
-              type: "bar",
-              data: {
-                labels: xValues,
-                datasets: [{
-                  label: 'Fav Stack',
-                  backgroundColor: barColors,
-                  data: yValues
-                }]
-              },
-              options: {
-                responsive: true,
-                animation: false
-              }
-            })
-        }); 
-
-
-     }
-    </script>
+    
   </head>
   <body>
     <div class="container">
@@ -118,7 +51,79 @@
       </table>
     </div>
 
-    <canvas id="myChart" style="width:100%; max-width:50em"></canvas>
-
+    <div class="chart-container" style="position: relative; height:40vh; width:80vw">
+      <canvas id="myChart" style="width:100%; max-width:50em"></canvas>
+    </div>
   </body>
+
+  <script>     
+
+    var barColors = ["red", "green","blue","orange","brown"];
+    var ctx_live = document.getElementById("myChart");
+
+    var myChart = new Chart(ctx_live, {
+            type: "bar",
+            data: {
+              labels: [],
+              datasets: [{
+                label: 'Fav Stack',
+                backgroundColor: barColors,
+                data: []
+              }]
+            },
+            options: {
+              responsive: true,
+              animation: false
+            }
+          });     
+        
+    function buttonClick(stackname){
+      
+            console.log( "vote cast for " + stackname);
+
+            $.post({
+              url: "{config:property("ingester.url")}/favstackxform",
+              data: {"stackname": stackname},
+              type: "POST",
+              crossDomain: true,
+              dataType: "json",
+            });
+        
+    }
+
+    var getData = function () {
+      $.getJSON( "{config:property("processor.url")}/getresults", { format: "jsonp" }, 
+        function(data){
+          $("#votetable tbody").html("<tr></tr>");
+          var xValues = [];
+          var yValues = [];
+          var i = 1;
+          myChart.data.labels = [];
+          myChart.data.datasets[0].data = [];
+          $(data).each(
+            function(){
+            
+              $("#votetable tbody").append(
+                '<tr id="'+this.stackname+'">'+
+                '<td data-label="Position:&nbsp; " class="position">'+i+'</td>'+
+                '<td data-label="Name:&nbsp; " class="fullname">'+this.fullname+'</td>'+
+                '<td data-label="Count:&nbsp; " class="counter">'+this.counter+'</td>'+
+                '<td class="vote">'+
+                '<div class="votebutton btn-one" id="'+this.fullname+'" name="'+this.stackname+'" onclick="window.buttonClick(\''+this.stackname+'\')"><span>'+
+                'Vote for '+this.fullname+'!</span></div></td></tr>'
+              );
+              myChart.data.labels.push(this.fullname);
+              myChart.data.datasets[0].data.push(this.counter);
+              myChart.update();
+              i++;
+            }
+          );            
+        }
+      );  
+    }
+
+
+
+    setInterval(getData, 2000);
+  </script>
 </html>

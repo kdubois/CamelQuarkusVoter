@@ -1,6 +1,6 @@
 package com.kevindubois.cameldemo.client;
 
-import java.util.List;
+import java.util.Set;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.ws.rs.GET;
@@ -15,6 +15,6 @@ import com.kevindubois.cameldemo.model.Vote;
 @RegisterRestClient(configKey="processor-api")
 public interface ProcessorRestClient {
     @GET
-    List<Vote> getVotes();
+    Set<Vote> getVotes();
 
 }

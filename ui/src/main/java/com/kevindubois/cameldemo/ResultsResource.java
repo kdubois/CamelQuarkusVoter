@@ -1,7 +1,7 @@
 package com.kevindubois.cameldemo;
 
-import java.util.LinkedList;
-import java.util.List;
+import java.util.Set;
+import java.util.TreeSet;
 
 import javax.inject.Inject;
 import javax.ws.rs.Consumes;
@@ -33,7 +33,7 @@ public class ResultsResource {
     @Consumes(MediaType.TEXT_HTML)
     @Produces(MediaType.TEXT_HTML)
     public TemplateInstance listVotes() {
-        List<Vote> votes = new LinkedList<>();
+        Set<Vote> votes = new TreeSet<>();
         try {
             processorRestClient.getVotes();
         } catch (Exception e) {
