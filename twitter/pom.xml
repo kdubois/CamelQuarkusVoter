@@ -7,7 +7,7 @@
     <artifactId>cameldemo</artifactId>
     <version>1.0.0-SNAPSHOT</version>
   </parent>
-  <artifactId>cameldemo-ingester</artifactId>
+  <artifactId>cameldemo-twitter</artifactId>
   <version>1.0.0-SNAPSHOT</version>
   <dependencyManagement>
     <dependencies>
@@ -38,15 +38,7 @@
     </dependency>
     <dependency>
       <groupId>org.apache.camel.quarkus</groupId>
-      <artifactId>camel-quarkus-rest</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>org.apache.camel.quarkus</groupId>
       <artifactId>camel-quarkus-log</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>org.apache.camel.quarkus</groupId>
-      <artifactId>camel-quarkus-jackson</artifactId>
     </dependency>
     <dependency>
       <groupId>org.apache.camel.quarkus</groupId>
@@ -75,11 +67,6 @@
     <dependency>
       <groupId>io.quarkus</groupId>
       <artifactId>quarkus-junit5</artifactId>
-      <scope>test</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.jboss.resteasy</groupId>
-      <artifactId>resteasy-client</artifactId>
       <scope>test</scope>
     </dependency>
     <dependency>

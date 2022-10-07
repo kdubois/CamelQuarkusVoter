@@ -8,7 +8,7 @@ Application Architecture
 
 The application is composed of 4 applications that communicate through Rest and Kafka and consume a database
 
-![Architecture](architecture.jpeg)
+![Architecture](architecture.png)
 
 The UI application features a, well, UI, that shows the results of a poll and a form to vote for your favorite Java stack.
 When you vote, a REST POST event gets sent to the 'ingester' app, which will translate the result and add it to a Kafka topic.  This app is designed to scale out rapidly with Knative so that it can handle bursts of requests.  
@@ -86,3 +86,8 @@ Running On Openshift
 1. In the AMQ Streams operator, install the kafka cluster component.  Make sure the cluster name matches up with the cluster service name in the kubefiles/configmap.yaml file.
 1. Install a Postgresql Database (you can use the built in Openshift template).  Name the db 'votedb' and set the username and password to what you have configured in the kubefiles/secrets.yaml.
 1. Build and deploy the applications.  If you're logged in to Openshift in your terminal, you can run `mvn clean package -Pnative -Dquarkus.kubernetes.deploy` and Quarkus will take care of building native binaries and deploying them to Openshift and it will even configure the wiring to use the secrets and configmaps for you.   Otherwise you may also use the kubefiles/applications/* to deploy the applications (eg. using ArgoCD)
+
+Bonus Feature
+-------------
+
+There is also a twitter module that searches for matching keywords in tweets addressed to me (@kevindubois) and adds them to the kafka votes topic as well.  The same process applies as for the above modules to deploy.  Either run locally with `mvn quarkus:dev` or deploy to kubernetes with eg. `mvn clean package -Pnative -Dquarkus.kubernetes.deploy`.  Make sure to update your application.properties and/or kubefiles/secrets.yaml with your twitter credentials. 
