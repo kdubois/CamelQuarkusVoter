@@ -1,7 +1,10 @@
 package com.kevindubois.cameldemo;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
+import java.util.stream.Collectors;
 
 import javax.inject.Inject;
 import javax.ws.rs.Consumes;
@@ -33,9 +36,9 @@ public class ResultsResource {
     @Consumes(MediaType.TEXT_HTML)
     @Produces(MediaType.TEXT_HTML)
     public TemplateInstance listVotes() {
-        Set<Vote> votes = new TreeSet<>();
+        List<Vote> votes = new ArrayList<>();
         try {
-            processorRestClient.getVotes();
+            votes = processorRestClient.getVotes();
         } catch (Exception e) {
             Log.error(e);
         }

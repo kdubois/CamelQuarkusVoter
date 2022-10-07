@@ -21,7 +21,7 @@ public class TwitterRoute extends RouteBuilder {
 
         fromF("twitter-search://%s?", searchTerm, count)
             .log(LoggingLevel.INFO, "Twitter Search Result: ${body}")
-            .process(new TweetInfoProcessor())
+            .process(new TweetInfoProcessor())            
             .choice()                
                 .when(simple("${body} ~~ 'quarkus'")).setBody(simple("{\"stackname\":\"quarkus\"}")).to("direct:sendToKafka")
                 .when(simple("${body} ~~ 'micronaut'")).setBody(simple("{\"stackname\":\"micronaut\"}")).to("direct:sendToKafka")
@@ -32,7 +32,7 @@ public class TwitterRoute extends RouteBuilder {
 
         from("direct:sendToKafka")
             .routeId("sendToKafka")
-            .log("Sending message to kafka topic: {{kafka.topic.name}}")
+            .log("Sending message '${body}' to kafka topic {{kafka.topic.name}}")
             .to("kafka:{{kafka.topic.name}}");
     }
 

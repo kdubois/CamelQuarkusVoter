@@ -1,6 +1,8 @@
 <!doctype html>
+
 <html lang="en">
   <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta charset="utf-8">
 
     <!-- CSS ... -->
@@ -35,13 +37,15 @@
           
           {#for vote in votes}  
           <tr id="{vote.stackname}">
-            <td data-label="Position:&nbsp;"scope="row" class="position"></td>
-            <td data-label="Name:&nbsp;" class="fullname">{vote.fullname}</td>
-            <td data-label="Count: &nbsp;" class="counter">{vote.counter}</td>
-            <td class="vote">
-              <button class="votebutton" id="{vote.stackname}+'" name="{vote.stackname}" onclick="window.buttonClick('{vote.stackname}')">
-                 Vote for {vote.fullname}!
-              </button>
+            <td data-label="Position:&nbsp;"scope="row" class="position" id="position">{vote_count}</td>
+            <td data-label="Name:&nbsp;" class="fullname" id="fullname">{vote.fullname}</td>
+            <td data-label="Count: &nbsp;" class="counter" id="counter">{vote.counter}</td>
+            <td class="vote" id="vote">
+              <div class="votebutton btn-one" id="stackname" name="{vote.stackname}" onclick="window.buttonClick('{vote.stackname}')">
+                <span>
+                  Vote for {vote.fullname}!
+                </span>
+              </div>
             </td>
           </tr>          
           {/for}
@@ -94,7 +98,7 @@
     var getData = function () {
       $.getJSON( "{config:property("processor.url")}/getresults", { format: "jsonp" }, 
         function(data){
-          $("#votetable tbody").html("<tr></tr>");
+          
           var xValues = [];
           var yValues = [];
           var i = 1;
@@ -102,16 +106,10 @@
           myChart.data.datasets[0].data = [];
           $(data).each(
             function(){
-            
-              $("#votetable tbody").append(
-                '<tr id="'+this.stackname+'">'+
-                '<td data-label="Position:&nbsp; " class="position">'+i+'</td>'+
-                '<td data-label="Name:&nbsp; " class="fullname">'+this.fullname+'</td>'+
-                '<td data-label="Count:&nbsp; " class="counter">'+this.counter+'</td>'+
-                '<td class="vote">'+
-                '<div class="votebutton btn-one" id="'+this.fullname+'" name="'+this.stackname+'" onclick="window.buttonClick(\''+this.stackname+'\')"><span>'+
-                'Vote for '+this.fullname+'!</span></div></td></tr>'
-              );
+              $("#"+this.stackname+" .position").html(i);
+              $("#"+this.stackname+" .fullname").html(this.fullname);
+              $("#"+this.stackname+" .counter").html(this.counter);            
+               
               myChart.data.labels.push(this.fullname);
               myChart.data.datasets[0].data.push(this.counter);
               myChart.update();
@@ -122,7 +120,7 @@
       );  
     }
 
-
+    getData;
 
     setInterval(getData, 2000);
   </script>

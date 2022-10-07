@@ -16,7 +16,7 @@
         <collectionProp name="Arguments.arguments">
           <elementProp name="url" elementType="Argument">
             <stringProp name="Argument.name">url</stringProp>
-            <stringProp name="Argument.value">https://cameldemo-ingester-devoxx.apps.ocp4.redhat.arrowlabs.be/favstack</stringProp>
+            <stringProp name="Argument.value">https://cameldemo-ingester-devoxx.apps.cluster-wvztv.wvztv.sandbox1215.opentlc.com/favstack</stringProp>
             <stringProp name="Argument.metadata">=</stringProp>
           </elementProp>
           <elementProp name="contentType" elementType="Argument">
@@ -31,7 +31,7 @@
           </elementProp>
           <elementProp name="body" elementType="Argument">
             <stringProp name="Argument.name">body</stringProp>
-            <stringProp name="Argument.value">{&quot;stackname&quot;:&quot;microprofile&quot;}</stringProp>
+            <stringProp name="Argument.value">{&quot;stackname&quot;:&quot;quarkus&quot;}</stringProp>
             <stringProp name="Argument.metadata">=</stringProp>
           </elementProp>
         </collectionProp>
