@@ -61,7 +61,7 @@ The main component of the application:
 The _processor_ Camel Quarkus application receives the vote requests from Kafka, processes them, and writes results into the `votesdb` Postgres DB table.  As of right now it also returns the results through a /getresults endpoint.
 The application has the following Camel Routes:
 
-* `processor/VotesRoute` consumes messages from a kafka topic (in json format), extracts the value of 'stackname' and increments the counter of the java stack that matches with this stackname.
+* `processor/VotesRoute` consumes messages from a kafka topic (in json format), extracts the value of 'shortname' and increments the counter of the java stack that matches with this shortname.
 * `RestRoute` returns data from the votes table in json format
 
 Running in native

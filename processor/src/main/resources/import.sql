@@ -1,7 +1,7 @@
-INSERT INTO vote (id, stackname, fullname, counter) VALUES 
-    (nextval('hibernate_sequence'), 'quarkus', 'Quarkus', 1), 
-    (nextval('hibernate_sequence'), 'micronaut', 'Micronaut', 0), 
-    (nextval('hibernate_sequence'), 'spring', 'Spring', 0), 
-    (nextval('hibernate_sequence'), 'microprofile', 'Microprofile', 0), 
-    (nextval('hibernate_sequence'), 'jakarta', 'Jakarta EE', 0), 
+INSERT INTO vote (id, shortname, fullname, counter) VALUES 
+    (nextval('hibernate_sequence'), 'intellij', 'IntelliJ', 0),      
+    (nextval('hibernate_sequence'), 'vscode', 'VScode', 0),      
+    (nextval('hibernate_sequence'), 'eclipse', 'Eclipse', 0),      
+    (nextval('hibernate_sequence'), 'openshiftdevspaces', 'Openshift Dev Spaces', 0),   
+    (nextval('hibernate_sequence'), 'vim', 'Vim', 0),   
     (nextval('hibernate_sequence'), 'other', 'Other', 0);

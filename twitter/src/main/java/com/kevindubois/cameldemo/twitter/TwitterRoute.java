@@ -23,11 +23,11 @@ public class TwitterRoute extends RouteBuilder {
             .log(LoggingLevel.INFO, "Twitter Search Result: ${body}")
             .process(new TweetInfoProcessor())            
             .choice()                
-                .when(simple("${body} ~~ 'quarkus'")).setBody(simple("{\"stackname\":\"quarkus\"}")).to("direct:sendToKafka")
-                .when(simple("${body} ~~ 'micronaut'")).setBody(simple("{\"stackname\":\"micronaut\"}")).to("direct:sendToKafka")
-                .when(simple("${body} ~~ 'spring'")).setBody(simple("{\"stackname\":\"spring\"}")).to("direct:sendToKafka")
-                .when(simple("${body} ~~ 'jakarta'")).setBody(simple("{\"stackname\":\"jakarta\"}")).to("direct:sendToKafka")
-                .when(simple("${body} ~~ 'microprofile'")).setBody(simple("{\"stackname\":\"microprofile\"}")).to("direct:sendToKafka")
+                .when(simple("${body} ~~ 'intellij'")).setBody(simple("{\"shortname\":\"intellij\"}")).to("direct:sendToKafka")
+                .when(simple("${body} ~~ 'vscode'")).setBody(simple("{\"shortname\":\"vscode\"}")).to("direct:sendToKafka")
+                .when(simple("${body} ~~ 'eclipse'")).setBody(simple("{\"shortname\":\"eclipse\"}")).to("direct:sendToKafka")
+                .when(simple("${body} ~~ 'openshiftdevspaces'")).setBody(simple("{\"shortname\":\"openshiftdevspaces\"}")).to("direct:sendToKafka")
+                .when(simple("${body} ~~ 'vim'")).setBody(simple("{\"shortname\":\"vim\"}")).to("direct:sendToKafka")
                 .otherwise().log("no match");
 
         from("direct:sendToKafka")

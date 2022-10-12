@@ -19,7 +19,7 @@ public class ProcessorRestClientTest {
             .statusCode(200)
             .body("$.size()", is(1),
                 "[0].id", is(1),
-                "[0].stackname", is("quarkus"),
+                "[0].shortname", is("quarkus"),
                 "[0].fullname", is("Quarkus"),
                 "[0].counter", is(1)
             );

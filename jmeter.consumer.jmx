@@ -31,7 +31,7 @@
           </elementProp>
           <elementProp name="body" elementType="Argument">
             <stringProp name="Argument.name">body</stringProp>
-            <stringProp name="Argument.value">{&quot;stackname&quot;:&quot;quarkus&quot;}</stringProp>
+            <stringProp name="Argument.value">{&quot;shortname&quot;:&quot;openshiftdevspaces&quot;}</stringProp>
             <stringProp name="Argument.metadata">=</stringProp>
           </elementProp>
         </collectionProp>

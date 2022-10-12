@@ -8,13 +8,13 @@ import io.quarkus.runtime.annotations.RegisterForReflection;
 @RegisterForReflection
 public class Response {
 
-    private String stackname;
+    private String shortname;
 
-    public String getStackname(){
-        return stackname;
+    public String getShortname(){
+        return shortname;
     }
 
-    public void setStackname(String stackname) {
-        this.stackname = stackname;
+    public void setShortname(String shortname) {
+        this.shortname = shortname;
     }
 }

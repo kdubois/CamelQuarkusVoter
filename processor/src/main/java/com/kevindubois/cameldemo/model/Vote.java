@@ -19,20 +19,21 @@ import io.quarkus.runtime.annotations.RegisterForReflection;
 @Cacheable
 public class Vote extends PanacheEntity{
 
-    public String stackname;
+    public String shortname;
     public String fullname;    
     public int counter;
 
     private Logger log = Logger.getLogger(Vote.class);
 
-    public void updateCounter(String stackname) {
+    public void updateCounter(String shortname) {
+        
 
-            int rowsUpdated = update("counter = counter + 1 WHERE stackname = ?1", stackname);
+            int rowsUpdated = update("counter = counter + 1 WHERE shortname = ?1", shortname);
             if (rowsUpdated > 0 ){
-                log.info("DB has been updated for " + stackname);
+                log.info("DB has been updated for " + shortname);
                 
             } else {
-                log.error("No rows updated for stackname " + stackname);
+                log.error("No rows updated for shortname " + shortname);
             } 
     }
 
@@ -44,7 +45,7 @@ public class Vote extends PanacheEntity{
     public String toString() {
         return "Vote{" +
                 "id='" + id + '\'' +
-                ", stackname=" + stackname + '\'' +
+                ", shortname=" + shortname + '\'' +
                 ", fullname=" + fullname + '\'' +
                 ", counter=" + counter +
                 '}';

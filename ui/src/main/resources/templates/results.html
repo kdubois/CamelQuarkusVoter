@@ -36,12 +36,12 @@
 
           
           {#for vote in votes}  
-          <tr id="{vote.stackname}">
+          <tr id="{vote.shortname}">
             <td data-label="Position:&nbsp;"scope="row" class="position" id="position">{vote_count}</td>
             <td data-label="Name:&nbsp;" class="fullname" id="fullname">{vote.fullname}</td>
             <td data-label="Count: &nbsp;" class="counter" id="counter">{vote.counter}</td>
             <td class="vote" id="vote">
-              <div class="votebutton btn-one" id="stackname" name="{vote.stackname}" onclick="window.buttonClick('{vote.stackname}')">
+              <div class="votebutton btn-one" id="shortname" name="{vote.shortname}" onclick="window.buttonClick('{vote.shortname}')">
                 <span>
                   Vote for {vote.fullname}!
                 </span>
@@ -70,7 +70,7 @@
             data: {
               labels: [],
               datasets: [{
-                label: 'Fav Stack',
+                label: 'Fav IDE',
                 backgroundColor: barColors,
                 data: []
               }]
@@ -81,13 +81,13 @@
             }
           });     
         
-    function buttonClick(stackname){
+    function buttonClick(shortname){
       
-            console.log( "vote cast for " + stackname);
+            console.log( "vote cast for " + shortname);
 
             $.post({
               url: "{config:property("ingester.url")}/favstackxform",
-              data: {"stackname": stackname},
+              data: {"shortname": shortname},
               type: "POST",
               crossDomain: true,
               dataType: "json",
@@ -106,9 +106,9 @@
           myChart.data.datasets[0].data = [];
           $(data).each(
             function(){
-              $("#"+this.stackname+" .position").html(i);
-              $("#"+this.stackname+" .fullname").html(this.fullname);
-              $("#"+this.stackname+" .counter").html(this.counter);            
+              $("#"+this.shortname+" .position").html(i);
+              $("#"+this.shortname+" .fullname").html(this.fullname);
+              $("#"+this.shortname+" .counter").html(this.counter);            
                
               myChart.data.labels.push(this.fullname);
               myChart.data.datasets[0].data.push(this.counter);

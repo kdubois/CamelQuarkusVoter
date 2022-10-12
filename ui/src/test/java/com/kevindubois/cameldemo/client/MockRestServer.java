@@ -32,7 +32,7 @@ public class MockRestServer implements QuarkusTestResourceLifecycleManager {
                                 [
                                     {
                                         "id":1, 
-                                        "stackname": "quarkus",
+                                        "shortname": "quarkus",
                                         "fullname": "Quarkus",
                                         "counter": 1
                                     }

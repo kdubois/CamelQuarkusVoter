@@ -13,10 +13,11 @@ public class VotesRoute extends RouteBuilder{
 
         from("kafka:{{kafka.topic.name}}")
             .routeId("FromKafkaToDB")            
-            .log("Received message from Kafka: \"${body}\"")
+            .log("Received message from Kafka: ${body}")
             .unmarshal().json(JsonLibrary.Jackson, Response.class)     
-            .transacted()            
-            .to("bean:vote?method=updateCounter(${body.getStackname})");
+            .transacted()           
+            .log("body before bean is ${body.getShortname}")
+            .to("bean:vote?method=updateCounter(${body.getShortname})");
     }    
 }
 
