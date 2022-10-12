@@ -1,7 +1,6 @@
 package com.kevindubois.cameldemo.client;
 
 import java.util.List;
-import java.util.Set;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.ws.rs.GET;

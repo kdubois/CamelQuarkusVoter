@@ -87,6 +87,8 @@ Running On Openshift
 1. Install a Postgresql Database (you can use the built in Openshift template).  Name the db 'votedb' and set the username and password to what you have configured in the kubefiles/secrets.yaml.
 1. Build and deploy the applications.  If you're logged in to Openshift in your terminal, you can run `mvn clean package -Pnative -Dquarkus.kubernetes.deploy` and Quarkus will take care of building native binaries and deploying them to Openshift and it will even configure the wiring to use the secrets and configmaps for you.   Otherwise you may also use the kubefiles/applications/* to deploy the applications (eg. using ArgoCD)
 
+you can also build the image and deploy with knative, eg. kn service create cameldemo-processor --env-from cm:appconfig --env-from secret:db --image=quay.io/kevindubois/cameldemo-processor --force
+
 Bonus Feature
 -------------
 

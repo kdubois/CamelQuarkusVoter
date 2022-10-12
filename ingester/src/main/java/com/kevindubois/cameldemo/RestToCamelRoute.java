@@ -32,8 +32,8 @@ public class RestToCamelRoute extends RouteBuilder {
         from("direct:processRequest")
                 .routeId("marshallToJson")
                 .log("The body is ${body}")
-                .marshal().json()
-                .log("After marshalling the body is now ${body}")
+                .marshal().json()   
+                .log("message marshalled and is now ${body}")             
                 .to("direct:sendRequest");
 
                 
@@ -46,3 +46,5 @@ public class RestToCamelRoute extends RouteBuilder {
     }
 
 }
+
+// .log("After marshalling the body is now ${body}")

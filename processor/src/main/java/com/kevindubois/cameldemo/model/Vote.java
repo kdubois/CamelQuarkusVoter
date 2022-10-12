@@ -30,15 +30,14 @@ public class Vote extends PanacheEntity{
             int rowsUpdated = update("counter = counter + 1 WHERE stackname = ?1", stackname);
             if (rowsUpdated > 0 ){
                 log.info("DB has been updated for " + stackname);
-                log.info(find("stackname = ?1", stackname).firstResult().toString());
+                
             } else {
                 log.error("No rows updated for stackname " + stackname);
             } 
     }
 
     public List<Vote> orderedList() {
-        Sort sort = Sort.descending("counter");
-        return Vote.listAll(sort);
+        return Vote.listAll(Sort.descending("counter"));
     }
 
     @Override
