@@ -24,7 +24,7 @@ public class RestRoute extends RouteBuilder{
         .transacted()
         .bean("vote", "orderedList()")        
         .marshal().json()
-        //.log(${body})
+        .log("${body}")
         .convertBodyTo(String.class);      
         
     }
