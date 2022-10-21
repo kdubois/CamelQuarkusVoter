@@ -3,6 +3,8 @@ Votes Processor
 
 This demo project illustrates how Camel Quarkus applications can leverage Quarkus native builds and interact seamlessly with Apache Kafka and Knative Serving
 
+Watch the demo in action during my talk at Devoxx: https://youtu.be/FBWgbhp8FG8
+
 Application Architecture
 ------------------------
 
