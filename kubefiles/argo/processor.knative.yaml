@@ -38,9 +38,8 @@ spec:
             failureThreshold: 3
             httpGet:
               path: /q/health/live
-              port: null
+              port: 0
               scheme: HTTP
-            initialDelaySeconds: 0
             periodSeconds: 30
             successThreshold: 1
             timeoutSeconds: 10
@@ -54,9 +53,8 @@ spec:
             failureThreshold: 3
             httpGet:
               path: /q/health/ready
-              port: null
+              port: 0
               scheme: HTTP
-            initialDelaySeconds: 0
             periodSeconds: 30
             successThreshold: 1
             timeoutSeconds: 10
