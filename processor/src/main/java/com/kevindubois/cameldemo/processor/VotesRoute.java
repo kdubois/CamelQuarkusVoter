@@ -18,6 +18,6 @@ public class VotesRoute extends RouteBuilder{
             .transacted()           
             .log("body before bean is ${body.getShortname}")
             .to("bean:vote?method=updateCounter(${body.getShortname})");
-    }    
+    }
 }
 
