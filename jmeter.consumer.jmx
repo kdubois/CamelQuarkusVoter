@@ -16,7 +16,7 @@
         <collectionProp name="Arguments.arguments">
           <elementProp name="url" elementType="Argument">
             <stringProp name="Argument.name">url</stringProp>
-            <stringProp name="Argument.value">https://cameldemo-ingester-devoxx.apps.cluster-xkp97.xkp97.sandbox641.opentlc.com/favstack</stringProp>
+            <stringProp name="Argument.value">https://cameldemo-ingester-demo.apps.cluster-lm9lp.lm9lp.sandbox262.opentlc.com/favstack</stringProp>
             <stringProp name="Argument.metadata">=</stringProp>
           </elementProp>
           <elementProp name="contentType" elementType="Argument">
