@@ -72,7 +72,7 @@ Running in native
 You can compile the respective applications into a native binary using:
 
 ```bash
-mvn package -Pnative
+mvn package -Dnative
 ```
 
 As you are running in _prod_ mode, you need a Kafka cluster.
@@ -84,14 +84,15 @@ Running On Openshift
 1. Install the Openshift Serverless (Knative) Operator
 1. Install Openshift Serverless "Knative Serving" component
 1. Install AMQ Streams (Kafka) Operator
-1. Using the kubefiles/configmap-example.yaml and kubefiles/secrets-example.yaml as an example, create a secrets.yaml and configmap.yaml and apply the yamls (eg. kubectl apply -f kubefiles/secrets.yaml -f kubefiles/configmap.yaml)
-1. In the AMQ Streams operator, install the kafka cluster component.  Make sure the cluster name matches up with the cluster service name in the kubefiles/configmap.yaml file.
-1. Install a Postgresql Database (you can use the built in Openshift template).  Name the db 'votedb' and set the username and password to what you have configured in the kubefiles/secrets.yaml.
-1. Build and deploy the applications.  If you're logged in to Openshift in your terminal, you can run `mvn clean package -Pnative -Dquarkus.kubernetes.deploy` and Quarkus will take care of building native binaries and deploying them to Openshift and it will even configure the wiring to use the secrets and configmaps for you.   Otherwise you may also use the kubefiles/applications/* to deploy the applications (eg. using ArgoCD)
+1. Using the kubefiles/config/configmap-example.yaml and kubefiles/config/secrets-example.yaml as an example, create a secrets.yaml and configmap.yaml and apply the yamls (eg. kubectl apply -f kubefiles/config/secrets.yaml -f kubefiles/config/configmap.yaml)
+1. In the AMQ Streams operator, install the kafka cluster component.  Make sure the cluster name matches up with the cluster service name in the kubefiles/config/configmap.yaml file.
+1. Install a Postgresql Database (you can use the built in Openshift template).  Name the db 'votedb' and set the username and password to what you have configured in the kubefiles/config/secrets.yaml.
+1. Build and deploy the applications.  If you're logged in to Openshift in your terminal, you can run `mvn clean package -Dnative -Dquarkus.kubernetes.deploy` and Quarkus will take care of building native binaries and deploying them to Openshift and it will even configure the wiring to use the secrets and configmaps for you. 
+Alternatively you can also let Quarkus build & push native container images using the Quarkus CLI: `quarkus push --also-build --native --registry=quay.io`.  And then use the kubefiles/argo/* yamls to deploy the applications (eg. using ArgoCD)
 
 you can also build the image and deploy with knative, eg. kn service create cameldemo-processor --env-from cm:appconfig --env-from secret:db --image=quay.io/kevindubois/cameldemo-processor --force
 
 Bonus Feature
 -------------
 
-There is also a twitter module that searches for matching keywords in tweets addressed to me (@kevindubois) and adds them to the kafka votes topic as well.  The same process applies as for the above modules to deploy.  Either run locally with `mvn quarkus:dev` or deploy to kubernetes with eg. `mvn clean package -Pnative -Dquarkus.kubernetes.deploy`.  Make sure to update your application.properties and/or kubefiles/secrets.yaml with your twitter credentials. 
+There is also a twitter module that searches for matching keywords in tweets addressed to me (@kevindubois) and adds them to the kafka votes topic as well.  The same process applies as for the above modules to deploy.  Either run locally with `mvn quarkus:dev` or deploy to kubernetes with eg. `mvn clean package -Pnative -Dquarkus.kubernetes.deploy`.  Make sure to update your application.properties and/or kubefiles/secrets.yaml with your twitter credentials.  
