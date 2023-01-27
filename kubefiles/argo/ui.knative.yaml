@@ -2,9 +2,6 @@
 apiVersion: v1
 kind: ServiceAccount
 metadata:
-  annotations:
-    app.quarkus.io/commit-id: 79187f7087f9c61b7992048c0952aeb1bf07fa22
-    app.quarkus.io/build-timestamp: 2022-09-17 - 07:58:54 +0000
   labels:
     app.kubernetes.io/version: 1.0.0-SNAPSHOT
     app.kubernetes.io/name: cameldemo-ui
@@ -13,9 +10,6 @@ metadata:
 apiVersion: serving.knative.dev/v1
 kind: Service
 metadata:
-  annotations:
-    app.quarkus.io/commit-id: 79187f7087f9c61b7992048c0952aeb1bf07fa22
-    app.quarkus.io/build-timestamp: 2022-09-17 - 07:58:54 +0000
   labels:
     app.kubernetes.io/version: 1.0.0-SNAPSHOT
     app.kubernetes.io/name: cameldemo-ui
