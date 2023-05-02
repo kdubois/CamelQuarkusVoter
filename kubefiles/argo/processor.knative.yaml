@@ -4,7 +4,7 @@ kind: ServiceAccount
 metadata:
   labels:
     app.kubernetes.io/name: cameldemo-processor
-    app.kubernetes.io/version: 1.0.0-SNAPSHOT
+    app.kubernetes.io/version: 1.0.1-SNAPSHOT
   name: cameldemo-processor
 ---
 apiVersion: serving.knative.dev/v1
@@ -12,7 +12,7 @@ kind: Service
 metadata:
   labels:
     app.kubernetes.io/name: cameldemo-processor
-    app.kubernetes.io/version: 1.0.0-SNAPSHOT
+    app.kubernetes.io/version: 1.0.1-SNAPSHOT
     app.kubernetes.io/part-of: cameldemo
   name: cameldemo-processor
 spec:
@@ -20,7 +20,7 @@ spec:
     metadata:
       labels:
         app.kubernetes.io/name: cameldemo-processor
-        app.kubernetes.io/version: 1.0.0-SNAPSHOT
+        app.kubernetes.io/version: 1.0.1-SNAPSHOT
       annotations:
         autoscaling.knative.dev/minScale: '1'
         autoscaling.knative.dev/maxScale: '1'

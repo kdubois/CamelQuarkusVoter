@@ -4,7 +4,7 @@ kind: ServiceAccount
 metadata:
   labels:
     app.kubernetes.io/name: cameldemo-twitter
-    app.kubernetes.io/version: 1.0.0-SNAPSHOT
+    app.kubernetes.io/version: 1.0.1-SNAPSHOT
   name: cameldemo-twitter
 ---
 apiVersion: serving.knative.dev/v1
@@ -13,14 +13,14 @@ metadata:
   labels:
     app.kubernetes.io/name: cameldemo-twitter
     app.kubernetes.io/part-of: cameldemo
-    app.kubernetes.io/version: 1.0.0-SNAPSHOT
+    app.kubernetes.io/version: 1.0.1-SNAPSHOT
   name: cameldemo-twitter
 spec:
   template:
     metadata:
       labels:
         app.kubernetes.io/name: cameldemo-twitter
-        app.kubernetes.io/version: 1.0.0-SNAPSHOT
+        app.kubernetes.io/version: 1.0.1-SNAPSHOT
       annotations:
         autoscaling.knative.dev/minScale: '1'
         autoscaling.knative.dev/maxScale: '1'

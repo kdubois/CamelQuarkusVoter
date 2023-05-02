@@ -1,10 +1,12 @@
 <?xml version="1.0"?>
-<project xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd" xmlns="http://maven.apache.org/POM/4.0.0"
-    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+<project
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd"
+  xmlns="http://maven.apache.org/POM/4.0.0"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <modelVersion>4.0.0</modelVersion>
   <groupId>com.kevindubois</groupId>
   <artifactId>cameldemo</artifactId>
-  <version>1.0.0-SNAPSHOT</version>
+  <version>1.0.1-SNAPSHOT</version>
   <packaging>pom</packaging>
   <modules>
     <module>ingester</module>
@@ -13,17 +15,29 @@
     <module>twitter</module>
   </modules>
   <properties>
-    <cameldemo.version>1.0.0-SNAPSHOT</cameldemo.version>
+    <cameldemo.version>1.0.1-SNAPSHOT</cameldemo.version>
     <compiler-plugin.version>3.10.1</compiler-plugin.version>
-    <maven.compiler.release>17</maven.compiler.release>   
+    <maven.compiler.release>17</maven.compiler.release>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
     <quarkus.platform.artifact-id>quarkus-bom</quarkus.platform.artifact-id>
     <quarkus.platform.group-id>io.quarkus</quarkus.platform.group-id>
     <quarkus.platform.version>3.0.1.Final</quarkus.platform.version>
-    <surefire-plugin.version>3.0.0-M8</surefire-plugin.version>    
+    <surefire-plugin.version>3.0.0-M8</surefire-plugin.version>
     <wiremock.version>2.35.0</wiremock.version>
   </properties>
+  <developers>
+    <developer>
+      <id>kdubois</id>
+      <name>Kevin Dubois</name>
+    </developer>
+  </developers>
+  <scm>
+    <connection>scm:git:https://github.com/kdubois/CamelQuarkusVoter.git</connection>
+    <developerConnection>scm:git:https://github.com/kdubois/CamelQuarkusVoter.git</developerConnection>
+    <url>https://github.com/kdubois/CamelQuarkusVoter.git</url>
+    <tag>HEAD</tag>
+  </scm>
   <dependencyManagement>
     <dependencies>
       <dependency>

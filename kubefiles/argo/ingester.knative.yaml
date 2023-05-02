@@ -4,7 +4,7 @@ kind: ServiceAccount
 metadata:
   labels:
     app.kubernetes.io/name: cameldemo-ingester
-    app.kubernetes.io/version: 1.0.0-SNAPSHOT
+    app.kubernetes.io/version: 1.0.1-SNAPSHOT
   name: cameldemo-ingester
 ---
 apiVersion: serving.knative.dev/v1
@@ -12,14 +12,14 @@ kind: Service
 metadata:
   labels:
     app.kubernetes.io/name: cameldemo-ingester
-    app.kubernetes.io/version: 1.0.0-SNAPSHOT
+    app.kubernetes.io/version: 1.0.1-SNAPSHOT
   name: cameldemo-ingester
 spec:
   template:
     metadata:
       labels:
         app.kubernetes.io/name: cameldemo-ingester
-        app.kubernetes.io/version: 1.0.0-SNAPSHOT
+        app.kubernetes.io/version: 1.0.1-SNAPSHOT
         app.kubernetes.io/part-of: cameldemo
       annotations:
         autoscaling.knative.dev/target: '2'
