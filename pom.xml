@@ -6,7 +6,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>com.kevindubois</groupId>
   <artifactId>cameldemo</artifactId>
-  <version>1.0.1-SNAPSHOT</version>
+  <version>1.0.1</version>
   <packaging>pom</packaging>
   <modules>
     <module>ingester</module>
@@ -15,15 +15,15 @@
     <module>twitter</module>
   </modules>
   <properties>
-    <cameldemo.version>1.0.1-SNAPSHOT</cameldemo.version>
+    <cameldemo.version>1.0.1</cameldemo.version>
     <compiler-plugin.version>3.10.1</compiler-plugin.version>
     <maven.compiler.release>17</maven.compiler.release>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
     <quarkus.platform.artifact-id>quarkus-bom</quarkus.platform.artifact-id>
     <quarkus.platform.group-id>io.quarkus</quarkus.platform.group-id>
-    <quarkus.platform.version>3.0.1.Final</quarkus.platform.version>
-    <surefire-plugin.version>3.0.0-M8</surefire-plugin.version>
+    <quarkus.platform.version>3.1.2.Final</quarkus.platform.version>
+    <surefire-plugin.version>3.0.0</surefire-plugin.version>
     <wiremock.version>2.35.0</wiremock.version>
   </properties>
   <developers>

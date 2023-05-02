@@ -3,31 +3,31 @@ apiVersion: v1
 kind: ServiceAccount
 metadata:
   labels:
-    app.kubernetes.io/name: cameldemo-processor
-    app.kubernetes.io/version: 1.0.1-SNAPSHOT
-  name: cameldemo-processor
+    app.kubernetes.io/name: cameldemo-twitter
+    app.kubernetes.io/version: 1.0.1
+  name: cameldemo-twitter
 ---
 apiVersion: serving.knative.dev/v1
 kind: Service
 metadata:
   labels:
-    app.kubernetes.io/name: cameldemo-processor
-    app.kubernetes.io/version: 1.0.1-SNAPSHOT
+    app.kubernetes.io/name: cameldemo-twitter
     app.kubernetes.io/part-of: cameldemo
-  name: cameldemo-processor
+    app.kubernetes.io/version: 1.0.1
+  name: cameldemo-twitter
 spec:
   template:
     metadata:
       labels:
-        app.kubernetes.io/name: cameldemo-processor
-        app.kubernetes.io/version: 1.0.1-SNAPSHOT
+        app.kubernetes.io/name: cameldemo-twitter
+        app.kubernetes.io/version: 1.0.1
       annotations:
         autoscaling.knative.dev/minScale: '1'
         autoscaling.knative.dev/maxScale: '1'
     spec:
       containerConcurrency: 0
       containers:
-        - image: quay.io/kevindubois/cameldemo-processor
+        - image: quay.io/kevindubois/cameldemo-twitter:1.0.1
           livenessProbe:
             failureThreshold: 3
             httpGet:
@@ -38,7 +38,7 @@ spec:
             successThreshold: 1
             timeoutSeconds: 10
           imagePullPolicy: IfNotPresent
-          name: cameldemo-processor
+          name: cameldemo-twitter
           ports:
             - containerPort: 8080
               name: http1
@@ -52,7 +52,7 @@ spec:
             periodSeconds: 30
             successThreshold: 1
             timeoutSeconds: 10
-      serviceAccountName: cameldemo-processor
+      serviceAccountName: cameldemo-twitter
 ---
 apiVersion: rbac.authorization.k8s.io/v1
 kind: Role
@@ -69,23 +69,23 @@ rules:
 apiVersion: rbac.authorization.k8s.io/v1
 kind: RoleBinding
 metadata:
-  name: cameldemo-processor-view
+  name: cameldemo-twitter-view
 roleRef:
   kind: ClusterRole
   apiGroup: rbac.authorization.k8s.io
   name: view
 subjects:
   - kind: ServiceAccount
-    name: cameldemo-processor
+    name: cameldemo-twitter
 ---
 apiVersion: rbac.authorization.k8s.io/v1
 kind: RoleBinding
 metadata:
-  name: cameldemo-processor-view-secrets
+  name: cameldemo-twitter-view-secrets
 roleRef:
   kind: Role
   apiGroup: rbac.authorization.k8s.io
   name: view-secrets
 subjects:
   - kind: ServiceAccount
-    name: cameldemo-processor
+    name: cameldemo-twitter
