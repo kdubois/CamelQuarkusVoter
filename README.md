@@ -95,4 +95,5 @@ you can also build the image and deploy with knative, eg. kn service create came
 Bonus Feature
 -------------
 
+[NOT WORKING ANYMORE SINCE TWITTER DECIDED TO START CHARGING (A LOT) TO SEARCH TWEETS VIA API]
 There is also a twitter module that searches for matching keywords in tweets addressed to me (@kevindubois) and adds them to the kafka votes topic as well.  The same process applies as for the above modules to deploy.  Either run locally with `mvn quarkus:dev` or deploy to kubernetes with eg. `mvn clean package -Pnative -Dquarkus.kubernetes.deploy`.  Make sure to update your application.properties and/or kubefiles/secrets.yaml with your twitter credentials.  
