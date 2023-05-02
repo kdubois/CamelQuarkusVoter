@@ -1,6 +1,6 @@
 package com.kevindubois.cameldemo.twitter;
 
-import javax.enterprise.context.ApplicationScoped;
+import jakarta.enterprise.context.ApplicationScoped;
 import org.apache.camel.LoggingLevel;
 import org.apache.camel.builder.RouteBuilder;
 import org.apache.camel.component.twitter.search.TwitterSearchComponent;

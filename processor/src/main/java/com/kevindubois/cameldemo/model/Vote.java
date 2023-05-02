@@ -2,10 +2,10 @@ package com.kevindubois.cameldemo.model;
 
 import java.util.List;
 
-import javax.enterprise.context.ApplicationScoped;
-import javax.inject.Named;
-import javax.persistence.Cacheable;
-import javax.persistence.Entity;
+import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.inject.Named;
+import jakarta.persistence.Cacheable;
+import jakarta.persistence.Entity;
 import org.jboss.logging.Logger;
 
 import io.quarkus.hibernate.orm.panache.PanacheEntity;
