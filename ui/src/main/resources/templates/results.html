@@ -12,6 +12,10 @@
 
     <script src="https://code.jquery.com/jquery-3.6.1.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js"></script>
+    <script>
+      var ingester_url='{config:property("ingester.url")}';
+      var processor_url='{config:property("processor.url")}';
+    </script>
     
   </head>
   <body>
@@ -60,68 +64,6 @@
     </div>
   </body>
 
-  <script>     
-
-    var barColors = ["red", "green","blue","orange","brown"];
-    var ctx_live = document.getElementById("myChart");
-
-    var myChart = new Chart(ctx_live, {
-            type: "bar",
-            data: {
-              labels: [],
-              datasets: [{
-                label: 'Fav IDE',
-                backgroundColor: barColors,
-                data: []
-              }]
-            },
-            options: {
-              responsive: true,
-              animation: false
-            }
-          });     
-        
-    function buttonClick(shortname){
-      
-            console.log( "vote cast for " + shortname);
-
-            $.post({
-              url: "{config:property("ingester.url")}/favstackxform",
-              data: {"shortname": shortname},
-              type: "POST",
-              crossDomain: true,
-              dataType: "json",
-            });
-        
-    }
-
-    var getData = function () {
-      $.getJSON( "{config:property("processor.url")}/getresults", { format: "jsonp" }, 
-        function(data){
-          
-          var xValues = [];
-          var yValues = [];
-          var i = 1;
-          myChart.data.labels = [];
-          myChart.data.datasets[0].data = [];
-          $(data).each(
-            function(){
-              $("#"+this.shortname+" .position").html(i);
-              $("#"+this.shortname+" .fullname").html(this.fullname);
-              $("#"+this.shortname+" .counter").html(this.counter);            
-               
-              myChart.data.labels.push(this.fullname);
-              myChart.data.datasets[0].data.push(this.counter);
-              myChart.update();
-              i++;
-            }
-          );            
-        }
-      );  
-    }
-
-    getData;
-
-    setInterval(getData, 2000);
-  </script>
+  
+  <script src="chart.js"></script>
 </html>

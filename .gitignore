@@ -14,6 +14,7 @@ jmeter.log
 
 
 
+
 # IntelliJ
 .idea
 *.ipr
@@ -44,3 +45,7 @@ pom.xml.releaseBackup
 pom.xml.versionsBackup
 release.properties
 quarkusdevUI.webm
+
+
+*.webm
+*.log

@@ -42,6 +42,10 @@ tbody tr:hover {
 }
 
 @media screen and (max-width: 600px) {
+    .chart-container {
+      display:none;
+    }
+
     table {
       border: 0;
     }
@@ -65,7 +69,7 @@ tbody tr:hover {
     
     table td {
       border-bottom: 1px solid #ddd;
-      display: block;
+      display: none;
       font-size: medium;
       text-align: left;      
     }
@@ -77,9 +81,14 @@ tbody tr:hover {
       text-transform: uppercase;
     }
 
-   
     table td:last-child {
+      display:block;
       border-bottom: 0;
+      padding: 3px;
+    }
+
+    .votebutton span {
+      font-size:large;
     }
   }
 
@@ -89,6 +98,7 @@ tbody tr:hover {
   display:inside;
   justify-content: center;
   align-items: center;
+  border-radius: 5px;
 }
 
 /* CSS */
