@@ -22,11 +22,11 @@ spec:
         app.kubernetes.io/version: 1.0.1
         app.kubernetes.io/part-of: cameldemo
       annotations:
-        autoscaling.knative.dev/target: '2'
+        autoscaling.knative.dev/target: '5'
         autoscaling.knative.dev/targetUtilizationPercentage: '70'
         autoscaling.knative.dev/window: 30s
     spec:
-      containerConcurrency: 1
+      containerConcurrency: 2
       containers:
         - image: quay.io/kevindubois/cameldemo-ingester:1.0.1
           imagePullPolicy: IfNotPresent
