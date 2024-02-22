@@ -1,4 +1,4 @@
-package com.kevindubois.cameldemo.model;
+package com.kevindubois.cameldemo.twitter;
 
 import java.util.Date;
 

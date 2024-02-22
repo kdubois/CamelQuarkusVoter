@@ -2,13 +2,12 @@ package com.kevindubois.cameldemo.client;
 
 import java.util.List;
 
+import com.kevindubois.cameldemo.Vote;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.ws.rs.GET;
 import jakarta.ws.rs.Path;
 
 import org.eclipse.microprofile.rest.client.inject.RegisterRestClient;
-
-import com.kevindubois.cameldemo.model.Vote;
 
 @ApplicationScoped
 @Path("/getresults")

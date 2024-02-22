@@ -1,4 +1,4 @@
-package com.kevindubois.cameldemo.model;
+package com.kevindubois.cameldemo;
 
 import java.util.List;
 

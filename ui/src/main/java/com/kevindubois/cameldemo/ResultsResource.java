@@ -13,7 +13,6 @@ import jakarta.ws.rs.core.MediaType;
 import org.eclipse.microprofile.rest.client.inject.RestClient;
 
 import com.kevindubois.cameldemo.client.ProcessorRestClient;
-import com.kevindubois.cameldemo.model.Vote;
 
 import io.quarkus.logging.Log;
 import io.quarkus.qute.Template;

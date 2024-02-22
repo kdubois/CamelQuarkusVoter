@@ -2,7 +2,7 @@ package com.kevindubois.cameldemo.twitter;
 
 import org.apache.camel.Exchange;
 import org.apache.camel.Processor;
-import twitter4j.Status;
+import twitter4j.v1.Status;
 
 public class TweetInfoProcessor implements Processor {
 
