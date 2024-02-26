@@ -32,12 +32,8 @@ public class ResultsResource {
     @Consumes(MediaType.TEXT_HTML)
     @Produces(MediaType.TEXT_HTML)
     public TemplateInstance listVotes() {
-        List<Vote> votes = new ArrayList<>();
-        try {
-            votes = processorRestClient.getVotes();
-        } catch (Exception e) {
-            Log.error(e);
-        }
+        List<Vote> votes = processorRestClient.getVotes();
+
         return results.data("votes", votes);
     }
 }

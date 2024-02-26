@@ -26,7 +26,6 @@ public class Vote extends PanacheEntity{
     private Logger log = Logger.getLogger(Vote.class);
 
     public void updateCounter(String shortname) {
-        
 
             int rowsUpdated = update("counter = counter + 1 WHERE shortname = ?1", shortname);
             if (rowsUpdated > 0 ){
