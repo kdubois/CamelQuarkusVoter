@@ -14,7 +14,14 @@ var myChart = new Chart(ctx_live, {
         },
         options: {
           responsive: true,
-          animation: false
+          animation: false,
+          scales: {
+            yAxes: [{
+              ticks: {
+                beginAtZero: true
+              }
+            }]
+          }
         }
       });     
     
