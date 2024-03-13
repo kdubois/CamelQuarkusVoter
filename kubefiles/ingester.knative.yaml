@@ -25,7 +25,7 @@ spec:
       annotations:
         autoscaling.knative.dev/target: '5'
         autoscaling.knative.dev/targetUtilizationPercentage: '70'
-        autoscaling.knative.dev/window: 30s
+        autoscaling.knative.dev/window: 15s
     spec:
       containerConcurrency: 2
       containers:
