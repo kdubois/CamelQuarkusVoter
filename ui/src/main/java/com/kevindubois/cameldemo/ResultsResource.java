@@ -1,20 +1,15 @@
 package com.kevindubois.cameldemo;
 
-import java.util.ArrayList;
-import java.util.List;
 
+import java.util.List;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.Consumes;
 import jakarta.ws.rs.GET;
 import jakarta.ws.rs.Path;
 import jakarta.ws.rs.Produces;
 import jakarta.ws.rs.core.MediaType;
-
 import org.eclipse.microprofile.rest.client.inject.RestClient;
-
 import com.kevindubois.cameldemo.client.ProcessorRestClient;
-
-import io.quarkus.logging.Log;
 import io.quarkus.qute.Template;
 import io.quarkus.qute.TemplateInstance;
 

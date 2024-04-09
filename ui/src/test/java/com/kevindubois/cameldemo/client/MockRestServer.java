@@ -16,14 +16,11 @@ public class MockRestServer implements QuarkusTestResourceLifecycleManager {
     static final int WIREMOCK_PORT = 7777;
     private static final String BASE_PATH = "/getresults";
 
-
-
     @Override
     public Map<String, String> start() {
         wireMockServer = new WireMockServer(WIREMOCK_PORT);
         wireMockServer.start(); 
         
-
         wireMockServer.stubFor(get(urlMatching(BASE_PATH))   
                 .willReturn(aResponse()
                         .withHeader("Content-Type", "application/json")

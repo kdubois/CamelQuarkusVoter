@@ -1,12 +1,10 @@
 package com.kevindubois.cameldemo.client;
 
 import org.junit.jupiter.api.Test;
-
 import io.quarkus.test.common.QuarkusTestResource;
 import io.quarkus.test.junit.QuarkusTest;
 import static io.restassured.RestAssured.given;
 import static org.hamcrest.CoreMatchers.is;
-
 
 @QuarkusTest
 @QuarkusTestResource(MockRestServer.class)
@@ -23,6 +21,5 @@ public class ProcessorRestClientTest {
                 "[0].fullname", is("Quarkus"),
                 "[0].counter", is(1)
             );
-
     }
 }
