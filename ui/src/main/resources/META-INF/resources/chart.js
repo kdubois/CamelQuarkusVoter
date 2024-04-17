@@ -34,15 +34,18 @@ function buttonClick(shortname){
           data: {"shortname": shortname},
           type: "POST",
           crossDomain: true,
-          dataType: "json",
+          dataType: "json"
         });
     
 }
 
 var getData = function () {
-  $.getJSON( processor_url+"/getresults", { format: "jsonp" }, 
-    function(data){
-      
+  $.getJSON( processor_url+"/getresults", { 
+    format: 'jsonp', 
+    dataType: 'jsonp',
+    crossDomain: true,  
+    }, 
+    function(data){      
       var xValues = [];
       var yValues = [];
       var i = 1;

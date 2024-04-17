@@ -1,0 +1,99 @@
+
+version: "3"
+services:
+
+  vote-db:
+    image: postgres:14
+    container_name: vote-db
+    ports:
+      - "5432"
+    environment:
+      POSTGRES_USER: cameldemo
+      POSTGRES_PASSWORD: cameldemo
+      POSTGRES_DB: votedb
+
+  votes-kafka:
+    image: quay.io/strimzi/kafka:0.35.1-kafka-3.4.0
+    container_name: kafka-no-keeper-bootstrap
+    command:
+      - "sh"
+      - "-c"
+      - "export CLUSTER_ID=$$(bin/kafka-storage.sh random-uuid) && bin/kafka-storage.sh format -t $${CLUSTER_ID} -c config/kraft/server.properties && bin/kafka-server-start.sh config/kraft/server.properties --override advertised.listeners=$${KAFKA_ADVERTISED_LISTENERS}"
+    ports:
+      - "9092:9092"
+    environment:
+      LOG_DIR: /tmp/logs
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://votes-kafka:9092
+
+  cameldemo-ui:
+    image: quay.io/kevindubois/cameldemo-ui:1.0.1
+    pull_policy: build
+    build:
+      context: ./ui
+      dockerfile: src/main/docker/Dockerfile.jvm
+    container_name: cameldemo-ui
+    depends_on:
+      - cameldemo-processor
+      - cameldemo-ingester
+    ports:
+      - "8080:8080"
+    environment:
+      INGESTER_URL: http://localhost:8081
+      PROCESSOR_URL: http://localhost:8082
+      QUARKUS_REST-CLIENT_PROCESSOR-API_URL: http://cameldemo-processor:8080
+      QUARKUS_PROFILE: compose
+      QUARKUS_HTTP_CORS: false
+    restart: on-failure
+    networks:
+      default:
+        aliases:
+          - cameldemo
+
+  cameldemo-ingester:
+    image: quay.io/kevindubois/cameldemo-ingester:1.0.1
+    pull_policy: build
+    build:
+      context: ./ingester
+      dockerfile: src/main/docker/Dockerfile.jvm
+    container_name: cameldemo-ingester
+    depends_on:
+      - votes-kafka
+    ports:
+      - "8081:8080"
+    environment:
+      KAFKA_BOOTSTRAP_SERVERS: "votes-kafka:9092"
+      CAMEL_COMPONENT_KAFKA_BROKERS: "votes-kafka:9092"
+      QUARKUS_PROFILE: compose
+      QUARKUS_HTTP_CORS: false
+    restart: on-failure
+    networks:
+      default:
+        aliases:
+          - cameldemo
+
+  cameldemo-processor:
+    image: quay.io/kevindubois/cameldemo-processor:1.0.1
+    pull_policy: build
+    build:
+      context: ./processor
+      dockerfile: src/main/docker/Dockerfile.jvm
+    container_name: cameldemo-processor
+    depends_on:
+      - vote-db
+      - votes-kafka
+    ports:
+      - "8082:8080"
+    environment:
+      KAFKA_BOOTSTRAP_SERVERS: "votes-kafka:9092"
+      CAMEL_COMPONENT_KAFKA_BROKERS: "votes-kafka:9092"
+      QUARKUS_PROFILE: compose
+      QUARKUS_DATASOURCE_USERNAME: cameldemo
+      QUARKUS_DATASOURCE_PASSWORD: cameldemo
+      QUARKUS_DATASOURCE_JDBC_URL: "jdbc:postgresql://vote-db:5432/votedb"
+      QUARKUS_HTTP_CORS: false
+    restart: on-failure
+    networks:
+      default:
+        aliases:
+          - cameldemo
+
