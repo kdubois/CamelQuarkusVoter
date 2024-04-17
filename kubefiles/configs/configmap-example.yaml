@@ -3,7 +3,7 @@ kind: ConfigMap
 metadata:
   name: appconfig
 data:
-  KAFKA_BOOSTRAP_SERVERS: "EXAMPLE-cluster-kafka-bootstrap:9092"
+  KAFKA_BOOTSTRAP_SERVERS: "EXAMPLE-cluster-kafka-bootstrap:9092"
   DB_SERVER: "quarkus"
   INGESTER_URL: "YOUR_CONSUMER_URL"
   PROCESSOR_URL: "YOUR_PROCESSOR_URL"
