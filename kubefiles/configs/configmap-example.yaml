@@ -5,5 +5,5 @@ metadata:
 data:
   KAFKA_BOOTSTRAP_SERVERS: "EXAMPLE-cluster-kafka-bootstrap:9092"
   DB_SERVER: "quarkus"
-  ingester_url: "YOUR_CONSUMER_URL"
-  processor_url: "YOUR_PROCESSOR_URL"
+  ingester.url: "YOUR_CONSUMER_URL"
+  processor.url: "YOUR_PROCESSOR_URL"
