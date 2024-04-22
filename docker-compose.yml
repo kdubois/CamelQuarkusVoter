@@ -38,8 +38,6 @@ services:
     ports:
       - "8080:8080"
     environment:
-      INGESTER_URL: http://localhost:8081
-      PROCESSOR_URL: http://localhost:8082
       QUARKUS_REST-CLIENT_PROCESSOR-API_URL: http://cameldemo-processor:8080
       QUARKUS_PROFILE: compose
       QUARKUS_HTTP_CORS: false
