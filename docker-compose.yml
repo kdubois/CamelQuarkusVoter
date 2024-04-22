@@ -43,6 +43,7 @@ services:
       QUARKUS_REST-CLIENT_PROCESSOR-API_URL: http://cameldemo-processor:8080
       QUARKUS_PROFILE: compose
       QUARKUS_HTTP_CORS: false
+      QUARKUS_KUBERNETES-CONFIG_ENABLED: false
     restart: on-failure
     networks:
       default:
@@ -65,6 +66,7 @@ services:
       CAMEL_COMPONENT_KAFKA_BROKERS: "votes-kafka:9092"
       QUARKUS_PROFILE: compose
       QUARKUS_HTTP_CORS: false
+      QUARKUS_KUBERNETES-CONFIG_ENABLED: false
     restart: on-failure
     networks:
       default:
@@ -91,6 +93,8 @@ services:
       QUARKUS_DATASOURCE_PASSWORD: cameldemo
       QUARKUS_DATASOURCE_JDBC_URL: "jdbc:postgresql://vote-db:5432/votedb"
       QUARKUS_HTTP_CORS: false
+      QUARKUS_KUBERNETES-CONFIG_ENABLED: false
+      QUARKUS_KUBERNETES-CONFIG_SECRETS_ENABLED: false
     restart: on-failure
     networks:
       default:
