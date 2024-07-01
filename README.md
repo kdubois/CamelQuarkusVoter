@@ -100,7 +100,7 @@ kubectl apply -f kubefiles/processor.knative.yaml -f kubefiles/ingester.knative.
 
 ## Option 2: Build the application locally and deploy with Quarkus
 
-1. Build and deploy the applications.  If you're logged in to Openshift in your terminal, you can run `mvn clean package -Dnative -Dquarkus.openshift.deploy` and Quarkus will take care of building native binaries and deploying them to Openshift and it will even configure the wiring to use the secrets and configmaps for you.
+1. Build and deploy the applications.  If you're logged in to Openshift in your terminal, you can run `mvn clean package -Dnative -Dquarkus.kubernetes.deploy -Dquarkus.kubernetes.deploy-target=openshift` and Quarkus will take care of building native binaries and deploying them to Openshift and it will even configure the wiring to use the secrets and configmaps for you.
 
 ## Option 3: Compile to native binaries, build container images and push to registry, then deploy to Openshift/Kubernetes
 
