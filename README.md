@@ -3,7 +3,7 @@ Votes Processor
 
 This demo project illustrates how Camel Quarkus applications can leverage Quarkus native builds and interact seamlessly with Apache Kafka and Knative Serving
 
-Watch the demo in action during my talk at Devoxx: https://youtu.be/FBWgbhp8FG8
+Watch the demo in action during my talk at Devoxx: <https://youtu.be/FBWgbhp8FG8>
 
 Application Architecture
 ------------------------
@@ -49,6 +49,7 @@ Anatomy
 The application is composed of the following components:
 
 ### UI
+
 The _ui_ application displays a list of java stacks/frameworks that you can vote for by clicking the respective button next to it.  This action calls the _ingester_ app.  The page also displays a bar chart of the results so far.  The app is built with Quarkus Qute templating and some crappy javascript/jquery code :P
 
 ### Ingester
@@ -77,20 +78,52 @@ mvn package -Dnative
 
 As you are running in _prod_ mode, you need a Kafka cluster.
 
-Running On Openshift
------------------------
+# Deploy to Openshift
+
+## Prepare the environment
 
 1. Create a new openshift project 'cameldemo' (if you use a different name, make sure to update the respective application.properties files)
 1. Install the Openshift Serverless (Knative) Operator
 1. Install Openshift Serverless "Knative Serving" component
 1. Install AMQ Streams (Kafka) Operator
 1. Using the kubefiles/config/configmap-example.yaml and kubefiles/config/secrets-example.yaml as an example, create a secrets.yaml and configmap.yaml and apply the yamls (eg. kubectl apply -f kubefiles/config/secrets.yaml -f kubefiles/config/configmap.yaml)
-1. In the AMQ Streams operator, install the kafka cluster component.  Make sure the cluster name matches up with the cluster service name in the kubefiles/config/configmap.yaml file.
+1. In the AMQ Streams operator, install the kafka cluster component. You can use the default 'my-cluster' name for the cluster. Otherwise make sure to update the bootstrap server name in the kubefiles/config/configmap.yaml file you just created.
 1. Install a Postgresql Database (you can use the built in Openshift template).  Name the db 'votedb' and set the username and password to what you have configured in the kubefiles/config/secrets.yaml.
-1. Build and deploy the applications.  If you're logged in to Openshift in your terminal, you can run `mvn clean package -Dnative -Dquarkus.kubernetes.deploy` and Quarkus will take care of building native binaries and deploying them to Openshift and it will even configure the wiring to use the secrets and configmaps for you.
-Alternatively you can also let Quarkus build & push native container images using the Quarkus CLI: `quarkus image push --also-build --native --registry=quay.io --group=yourquayuser`.  And then use the kubefiles/* yamls to deploy the applications (eg. using ArgoCD)
 
-you can also build the image and deploy with knative, eg. kn service create cameldemo-processor --env-from cm:appconfig --env-from secret:db --image=quay.io/kevindubois/cameldemo-processor --force
+## Option 1 (easiest): Deploy existing images
+
+Simply run the following command with the OC cli:
+
+```bash
+kubectl apply -f kubefiles/processor.knative.yaml -f kubefiles/ingester.knative.yaml -f kubefiles/ui.knative.yaml -n cameldemo
+```
+
+## Option 2: Build the application locally and deploy with Quarkus
+
+1. Build and deploy the applications.  If you're logged in to Openshift in your terminal, you can run `mvn clean package -Dnative -Dquarkus.openshift.deploy` and Quarkus will take care of building native binaries and deploying them to Openshift and it will even configure the wiring to use the secrets and configmaps for you.
+
+## Option 3: Compile to native binaries, build container images and push to registry, then deploy to Openshift/Kubernetes
+
+You can also let Quarkus build & push native container images using the Quarkus CLI (Make sure to update the --group value with your Quay user!!):
+
+```bash
+quarkus image push --also-build --native --registry=quay.io --group=yourquayuser
+```
+
+Then apply the yaml files (make sure to update the images in your yamls from `kevindubois` to YOUR quay user!)
+
+```bash
+    kubectl apply -f kubefiles/processor.knative.yaml -f kubefiles/ingester.knative.yaml -f kubefiles/ui.knative.yaml -n cameldemo
+```
+
+## Option 4: Deploy images with kn service:
+
+```bash
+kn service create cameldemo-processor --env-from cm:appconfig --env-from secret:db --image=quay.io/kevindubois/cameldemo-processor --force
+kn service create cameldemo-ingester --env-from cm:appconfig --env-from secret:db --image=quay.io/kevindubois/cameldemo-ingester --force
+kn service create cameldemo-ui --env-from cm:appconfig --env-from secret:db --image=quay.io/kevindubois/cameldemo-ui --force
+```
+
 
 Bonus Feature
 -------------
