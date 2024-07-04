@@ -92,7 +92,7 @@ As you are running in _prod_ mode, you need a Kafka cluster.
 
 ## Option 1 (easiest): Deploy existing images
 
-Simply run the following command with the OC cli:
+Simply run the following command with the `oc` or `kubectl` cli:
 
 ```bash
 kubectl apply -f kubefiles/processor.knative.yaml -f kubefiles/ingester.knative.yaml -f kubefiles/ui.knative.yaml -n cameldemo
@@ -100,11 +100,17 @@ kubectl apply -f kubefiles/processor.knative.yaml -f kubefiles/ingester.knative.
 
 ## Option 2: Build the application locally and deploy with Quarkus
 
-1. Build and deploy the applications.  If you're logged in to Openshift in your terminal, you can run `mvn clean package -Dnative -Dquarkus.kubernetes.deploy -Dquarkus.kubernetes.deploy-target=openshift` and Quarkus will take care of building native binaries and deploying them to Openshift and it will even configure the wiring to use the secrets and configmaps for you.
+1. Build and deploy the applications.  If you're logged in to Openshift in your terminal, you can run
 
-## Option 3: Compile to native binaries, build container images and push to registry, then deploy to Openshift/Kubernetes
+```bash
+mvn clean package -Dnative -Dquarkus.kubernetes.deploy -Dquarkus.kubernetes.deploy-target=openshift  -Dquarkus.container-image.registry= -Dquarkus-container-image.group=
+```
 
-You can also let Quarkus build & push native container images using the Quarkus CLI (Make sure to update the --group value with your Quay user!!):
+and Quarkus will take care of building native binaries and deploying them to Openshift and it will even configure the wiring to use the secrets and configmaps for you.
+
+## Option 3: (Linux Only) Compile to native binaries, build container images and push to registry, then deploy to Openshift/Kubernetes
+
+You can also let Quarkus build & push native container images using the Quarkus CLI (Make sure to update the --group value with your Quay user!).
 
 ```bash
 quarkus image push --also-build --native --registry=quay.io --group=yourquayuser
