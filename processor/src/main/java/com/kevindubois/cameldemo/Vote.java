@@ -17,23 +17,23 @@ import io.quarkus.runtime.annotations.RegisterForReflection;
 @ApplicationScoped
 @RegisterForReflection
 @Cacheable
-public class Vote extends PanacheEntity{
+public class Vote extends PanacheEntity {
 
     public String shortname;
-    public String fullname;    
+    public String fullname;
     public int counter;
 
     private Logger log = Logger.getLogger(Vote.class);
 
     public void updateCounter(String shortname) {
 
-            int rowsUpdated = update("counter = counter + 1 WHERE shortname = ?1", shortname);
-            if (rowsUpdated > 0 ){
-                log.info("DB has been updated for " + shortname);
-                
-            } else {
-                log.error("No rows updated for shortname " + shortname);
-            } 
+        int rowsUpdated = update("counter = counter + 1 WHERE shortname = ?1", shortname);
+        if (rowsUpdated > 0) {
+            log.info("DB has been updated for " + shortname);
+
+        } else {
+            log.error("No rows updated for shortname " + shortname);
+        }
     }
 
     public List<Vote> orderedList() {

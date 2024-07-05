@@ -10,7 +10,7 @@ public class Response {
 
     private String shortname;
 
-    public String getShortname(){
+    public String getShortname() {
         return shortname;
     }
 

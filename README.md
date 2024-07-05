@@ -100,13 +100,15 @@ kubectl apply -f kubefiles/processor.knative.yaml -f kubefiles/ingester.knative.
 
 ## Option 2: Build the application locally and deploy with Quarkus
 
-1. Build and deploy the applications.  If you're logged in to Openshift in your terminal, you can run
+1. Build and deploy the applications.  If you're logged in to Openshift in your terminal, you can run:
 
 ```bash
-mvn clean package -Dnative -Dquarkus.kubernetes.deploy -Dquarkus.kubernetes.deploy-target=openshift  -Dquarkus.container-image.registry= -Dquarkus-container-image.group=
+quarkus build -Dquarkus.openshift.deploy
 ```
 
-and Quarkus will take care of building native binaries and deploying them to Openshift and it will even configure the wiring to use the secrets and configmaps for you.
+and Quarkus will take care of building the application and deploying it to Openshift and it will even configure the wiring to use the secrets and configmaps for you. 
+If you want to deploy a native binary, you can add the -Dnative flag to build a native binary
+(If you're not on Linux, you will also likely need to add ` --no-tests -Dquarkus.native.container-build=true`)
 
 ## Option 3: (Linux Only) Compile to native binaries, build container images and push to registry, then deploy to Openshift/Kubernetes
 
@@ -125,9 +127,9 @@ Then apply the yaml files (make sure to update the images in your yamls from `ke
 ## Option 4: Deploy images with kn service:
 
 ```bash
-kn service create cameldemo-processor --env-from cm:appconfig --env-from secret:db --image=quay.io/kevindubois/cameldemo-processor --force
-kn service create cameldemo-ingester --env-from cm:appconfig --env-from secret:db --image=quay.io/kevindubois/cameldemo-ingester --force
-kn service create cameldemo-ui --env-from cm:appconfig --env-from secret:db --image=quay.io/kevindubois/cameldemo-ui --force
+kn service create cameldemo-processor --env-from cm:appconfig --env-from secret:postgresql --image=quay.io/kevindubois/cameldemo-processor --force
+kn service create cameldemo-ingester --env-from cm:appconfig --env-from secret:postgresql --image=quay.io/kevindubois/cameldemo-ingester --force
+kn service create cameldemo-ui --env-from cm:appconfig --env-from secret:postgresql --image=quay.io/kevindubois/cameldemo-ui --force
 ```
 
 

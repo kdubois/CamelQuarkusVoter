@@ -4,6 +4,5 @@ metadata:
   name: appconfig
 data:
   KAFKA_BOOTSTRAP_SERVERS: "my-cluster-cluster-kafka-bootstrap:9092"
-  DB_SERVER: "quarkus"
   ingester.url: "YOUR_CONSUMER_URL"
   processor.url: "YOUR_PROCESSOR_URL"
