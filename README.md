@@ -86,9 +86,10 @@ As you are running in _prod_ mode, you need a Kafka cluster.
 1. Install the Openshift Serverless (Knative) Operator
 1. Install Openshift Serverless "Knative Serving" component
 1. Install AMQ Streams (Kafka) Operator
-1. Using the kubefiles/config/configmap-example.yaml and kubefiles/config/secrets-example.yaml as an example, create a secrets.yaml and configmap.yaml and apply the yamls (eg. kubectl apply -f kubefiles/config/secrets.yaml -f kubefiles/config/configmap.yaml)
-1. In the AMQ Streams operator, install the kafka cluster component. You can use the default 'my-cluster' name for the cluster. Otherwise make sure to update the bootstrap server name in the kubefiles/config/configmap.yaml file you just created.
-1. Install a Postgresql Database (you can use the built in Openshift template).  Name the db 'votedb' and set the username and password to what you have configured in the kubefiles/config/secrets.yaml.
+1. In the AMQ Streams operator, install the kafka cluster component. You can use the default 'my-cluster' name for the cluster.
+1. Install a Postgresql Database (you can use the built in Openshift template).  Name the db 'votedb'.
+1. Using the `kubefiles/config/configmap-example.yaml` an example, modify it to match your environment and apply the yaml (eg. `kubectl apply -f kubefiles/config/configmap-example.yaml`). The ingester.url and processor.url should be set to the route of the components you will be deploying in the next step. It's a bit of a chicken-and-egg problem, but feel free to update these values and re-apply the yaml after you've deployed the services below and restart the UI pod if needed.
+1. If you did not use the Openshift template to deploy the database, you may need to create a postgresql secret containing the DB credentials. In that case use the kubefiles/config/secrets-example.yaml as an example the yaml (eg. `kubectl apply -f kubefiles/config/secrets-example.yaml -n cameldemo`).
 
 ## Option 1 (easiest): Deploy existing images
 
