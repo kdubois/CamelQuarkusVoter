@@ -3,6 +3,6 @@ kind: ConfigMap
 metadata:
   name: appconfig
 data:
-  KAFKA_BOOTSTRAP_SERVERS: "my-cluster-cluster-kafka-bootstrap:9092"
+  KAFKA_BOOTSTRAP_SERVERS: "my-cluster-kafka-bootstrap:9092"
   ingester.url: "YOUR_CONSUMER_URL"
   processor.url: "YOUR_PROCESSOR_URL"

@@ -6,8 +6,6 @@ public class RestToCamelRoute extends RouteBuilder {
 
         @Override
         public void configure() throws Exception {
-
-
                 // accept post requests in x-www-form-urlencoded from a /favstackxform endpoint
                 rest("/favstackxform")
                                 .post()
