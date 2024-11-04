@@ -4,11 +4,15 @@ kind: Kustomization
 namespace: canary
 
 resources:
+- serverless-subscription.yaml
+- strimzi-subscription.yaml
+- knative-serving.yaml
+- kafka-strimzi.yaml
+- configs/configmap.yaml
+- configs/secrets.yaml
 - ingester.knative.yaml
 - processor.knative.yaml
 - ui.knative.yaml
-- configs/configmap.yaml
-- configs/secrets.yaml
 
 
 
