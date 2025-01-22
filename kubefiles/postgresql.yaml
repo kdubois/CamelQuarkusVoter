@@ -41,3 +41,13 @@ spec:
   type: ClusterIP
   selector:
     app: postgresql
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: postgresql
+type: Opaque
+stringData:
+  database-user: "quarkus"
+  database-password: "quarkus"
+  database-name: "quarkus"
