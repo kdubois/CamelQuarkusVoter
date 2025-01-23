@@ -1,12 +1,10 @@
-Votes Processor
-========================
+# Votes Processor
 
 This demo project illustrates how Camel Quarkus applications can leverage Quarkus native builds and interact seamlessly with Apache Kafka and Knative Serving
 
 Watch the demo in action during my talk at Devoxx: <https://youtu.be/FBWgbhp8FG8>
 
-Application Architecture
-------------------------
+## Application Architecture
 
 The application is composed of 4 applications that communicate through Rest and Kafka and consume a database
 
@@ -17,8 +15,7 @@ When you vote, a REST POST event gets sent to the 'ingester' app, which will tra
 The 3rd application (processor) consumes the Kafka messages at its own pace and updates the database accordingly. (eg. if someone voted 'quarkus', the counter for quarkus would be incremented by 1)
 The 'retriever' application (currently embedded in the processor app) has a REST GET endpoint to get the results from the DB.  
 
-Running the Application locally in Dev Mode
--------------------------------------------
+## Running the Application locally in Dev Mode
 
 You can run the entire application on your local machine in Quarkus dev mode.  As long as you have Docker/Podman running on your machine, Quarkus will take care of spinning up Dev Services (basically a containerized mock) for your database and Kafka, so all you need to worry about is running the applications.  Nice huh? :)
 
@@ -43,8 +40,7 @@ mvn -f processor quarkus:dev
 Then, open your browser at `http://localhost:8080`.
 You can send requests and observe the votes table changing (asynchronously).
 
-Anatomy
---------
+## Anatomy
 
 The application is composed of the following components:
 
@@ -67,8 +63,7 @@ The application has the following Camel Routes:
 * `processor/VotesRoute` consumes messages from a kafka topic (in json format), extracts the value of 'shortname' and increments the counter of the java stack that matches with this shortname.
 * `RestRoute` returns data from the votes table in json format
 
-Running in native
------------------
+## Compiling to native binary
 
 You can compile the respective applications into a native binary using:
 
@@ -76,18 +71,22 @@ You can compile the respective applications into a native binary using:
 mvn package -Dnative
 ```
 
-As you are running in _prod_ mode, you need a Kafka cluster.
+## Deploy to Openshift
 
-# Deploy to Openshift
+### Prepare the environment
 
-## Prepare the environment
+NOTE: if you don't have an Openshift environment available, you can also get a
+developer sandbox at https://developers.openshift.com/sandbox.
+This environment already has Openshift Serverless installed.
+You won't have access to the Kafka operator, but instead you can install an
+ephemeral kafka cluster running in a single pod by applying the kafka-no-keeper.yaml file (`oc apply -f kubefiles/kafka-no-keeper.yaml`). After that you can proceed with step 6.
 
 1. Create a new openshift project 'cameldemo' (if you use a different name, make sure to update the respective application.properties files)
 1. Install the Openshift Serverless (Knative) Operator
 1. Install Openshift Serverless "Knative Serving" component
 1. Install AMQ Streams (Kafka) Operator
 1. In the AMQ Streams operator, install the kafka cluster component. You can use the default 'my-cluster' name for the cluster.
-1. Install a Postgresql Database (you can use the built in Openshift template).  Name the db 'votedb'.
+1. Install a Postgresql Database (you can use the built in Openshift template, or the kubefiles/postgresql.yaml file).  Name the db 'votedb'.
 1. Using the `kubefiles/config/configmap-example.yaml` an example, modify it to match your environment and apply the yaml (eg. `kubectl apply -f kubefiles/config/configmap-example.yaml`). The ingester.url and processor.url should be set to the route of the components you will be deploying in the next step. It's a bit of a chicken-and-egg problem, but feel free to update these values and re-apply the yaml after you've deployed the services below and restart the UI pod if needed.
 1. If you did not use the Openshift template to deploy the database, you may need to create a postgresql secret containing the DB credentials. In that case use the kubefiles/config/secrets-example.yaml as an example the yaml (eg. `kubectl apply -f kubefiles/config/secrets-example.yaml -n cameldemo`).
 
@@ -107,7 +106,7 @@ kubectl apply -f kubefiles/processor.knative.yaml -f kubefiles/ingester.knative.
 quarkus build -Dquarkus.openshift.deploy
 ```
 
-and Quarkus will take care of building the application and deploying it to Openshift and it will even configure the wiring to use the secrets and configmaps for you. 
+and Quarkus will take care of building the application and deploying it to Openshift and it will even configure the wiring to use the secrets and configmaps for you.
 If you want to deploy a native binary, you can add the -Dnative flag to build a native binary
 (If you're not on Linux, you will also likely need to add ` --no-tests -Dquarkus.native.container-build=true`)
 
@@ -133,9 +132,3 @@ kn service create cameldemo-ingester --env-from cm:appconfig --env-from secret:p
 kn service create cameldemo-ui --env-from cm:appconfig --env-from secret:postgresql --image=quay.io/kevindubois/cameldemo-ui --force
 ```
 
-
-Bonus Feature
--------------
-
-[NOT WORKING ANYMORE SINCE TWITTER DECIDED TO START CHARGING (A LOT) TO SEARCH TWEETS VIA API]
-There is also a twitter module that searches for matching keywords in tweets addressed to me (@kevindubois) and adds them to the kafka votes topic as well.  The same process applies as for the above modules to deploy.  Either run locally with `mvn quarkus:dev` or deploy to kubernetes with eg. `mvn clean package -Pnative -Dquarkus.kubernetes.deploy`.  Make sure to update your application.properties and/or kubefiles/secrets.yaml with your twitter credentials.  
