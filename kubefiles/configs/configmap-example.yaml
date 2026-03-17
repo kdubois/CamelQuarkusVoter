@@ -4,5 +4,7 @@ metadata:
   name: appconfig
 data:
   KAFKA_BOOTSTRAP_SERVERS: "my-cluster-kafka-bootstrap:9092"
-  ingester.url: "YOUR_CONSUMER_URL"
-  processor.url: "YOUR_PROCESSOR_URL"
+  # For internal cluster communication (recommended):
+  ingester.url: "http://cameldemo-ingester.cameldemo.svc.cluster.local"
+  processor.url: "http://cameldemo-processor.cameldemo.svc.cluster.local"
+  # For external routes, use format: https://cameldemo-ingester-cameldemo.apps.<cluster-domain>

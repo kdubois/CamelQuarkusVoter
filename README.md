@@ -71,32 +71,86 @@ You can compile the respective applications into a native binary using:
 mvn package -Dnative
 ```
 
-## Deploy to Openshift
+## Deploy to OpenShift
 
-### Prepare the environment
+### One-Command Deployment with Kustomize
 
-NOTE: if you don't have an Openshift environment available, you can also get a
-developer sandbox at https://developers.openshift.com/sandbox.
-This environment already has Openshift Serverless installed.
-You won't have access to the Kafka operator, but instead you can install an
-ephemeral kafka cluster running in a single pod by applying the kafka-no-keeper.yaml file (`oc apply -f kubefiles/kafka-no-keeper.yaml`). After that you can proceed with step 6.
-
-1. Create a new openshift project 'cameldemo' (if you use a different name, make sure to update the respective application.properties files)
-1. Install the Openshift Serverless (Knative) Operator
-1. Install Openshift Serverless "Knative Serving" component
-1. Install AMQ Streams (Kafka) Operator
-1. In the AMQ Streams operator, install the kafka cluster component. You can use the default 'my-cluster' name for the cluster.
-1. Install a Postgresql Database (you can use the built in Openshift template, or the kubefiles/postgresql.yaml file).  Name the db 'votedb'.
-1. Using the `kubefiles/config/configmap-example.yaml` an example, modify it to match your environment and apply the yaml (eg. `kubectl apply -f kubefiles/config/configmap-example.yaml`). The ingester.url and processor.url should be set to the route of the components you will be deploying in the next step. It's a bit of a chicken-and-egg problem, but feel free to update these values and re-apply the yaml after you've deployed the services below and restart the UI pod if needed.
-1. If you did not use the Openshift template to deploy the database, you may need to create a postgresql secret containing the DB credentials. In that case use the kubefiles/config/secrets-example.yaml as an example the yaml (eg. `kubectl apply -f kubefiles/config/secrets-example.yaml -n cameldemo`).
-
-## Option 1 (easiest): Deploy existing images
-
-Simply run the following command with the `oc` or `kubectl` cli:
+The easiest way to deploy the entire application stack (operators, PostgreSQL, Kafka, and all app components) is using kustomize:
 
 ```bash
-kubectl apply -f kubefiles/processor.knative.yaml -f kubefiles/ingester.knative.yaml -f kubefiles/ui.knative.yaml -n cameldemo
+kubectl apply -k kubefiles/
 ```
+
+This will deploy:
+- OpenShift Serverless operator
+- Red Hat Streams for Apache Kafka (Strimzi) operator
+- Knative Serving instance
+- Kafka cluster (my-cluster)
+- PostgreSQL database with credentials
+- ConfigMap with Kafka bootstrap servers and internal service URLs
+- Application services: ingester, processor, and UI
+
+**Note:** The operators may take a few minutes to install. If the Kafka cluster or Knative services fail initially, wait for the operators to be ready and re-run the command.
+
+**Local development note:** If you want custom configuration for local deployment, you can copy the example files:
+```bash
+cp kubefiles/configs/configmap-example.yaml kubefiles/configs/configmap.yaml
+# Edit configmap.yaml with your custom values
+# These files are gitignored to avoid committing cluster-specific configs
+```
+
+### Alternative: Deploy with ArgoCD
+
+If you have ArgoCD (OpenShift GitOps) installed on your cluster:
+
+```bash
+kubectl apply -f kubefiles/argo/argo-application.yaml
+```
+
+This creates an ArgoCD Application that:
+- Monitors this GitHub repository's `kubefiles/` directory
+- Automatically deploys all components
+- Syncs changes from the main branch
+- Auto-creates the `cameldemo` namespace
+
+ArgoCD will use the same kustomization.yaml to deploy all resources in the correct order.
+
+### After Deployment
+
+1. Wait for all pods to be ready: `kubectl get pods -n cameldemo`
+2. Get the UI route: `kubectl get ksvc cameldemo-ui -n cameldemo`
+3. Access the application through the provided URL
+
+### Manual Deployment (Alternative)
+
+If you prefer to deploy components individually:
+
+1. Create the namespace: `kubectl create namespace cameldemo`
+2. Install operators:
+   ```bash
+   kubectl apply -f kubefiles/serverless-subscription.yaml
+   kubectl apply -f kubefiles/strimzi-subscription.yaml
+   ```
+3. Wait for operators to be ready, then deploy infrastructure:
+   ```bash
+   kubectl apply -f kubefiles/knative-serving.yaml
+   kubectl apply -f kubefiles/kafka-strimzi.yaml
+   kubectl apply -f kubefiles/postgresql.yaml -n cameldemo
+   ```
+4. Deploy configuration and applications:
+   ```bash
+   kubectl apply -f kubefiles/configs/configmap.yaml -n cameldemo
+   kubectl apply -f kubefiles/ingester.knative.yaml -n cameldemo
+   kubectl apply -f kubefiles/processor.knative.yaml -n cameldemo
+   kubectl apply -f kubefiles/ui.knative.yaml -n cameldemo
+   ```
+
+### Developer Sandbox Note
+
+If using the free OpenShift Developer Sandbox (https://developers.openshift.com/sandbox):
+- Serverless is pre-installed
+- You won't have access to the Kafka operator
+- Use the lightweight Kafka instead: `kubectl apply -f kubefiles/kafka-no-keeper.yaml -n cameldemo`
 
 ## Option 2: Build the application locally and deploy with Quarkus
 

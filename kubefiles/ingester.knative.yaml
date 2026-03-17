@@ -31,6 +31,11 @@ spec:
       containers:
         - image: quay.io/kevindubois/cameldemo-ingester:1.0.1
           imagePullPolicy: IfNotPresent
+          envFrom:
+            - configMapRef:
+                name: appconfig
+            - secretRef:
+                name: postgresql
           livenessProbe:
             failureThreshold: 3
             httpGet:

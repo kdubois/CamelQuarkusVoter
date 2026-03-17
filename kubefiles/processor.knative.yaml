@@ -28,6 +28,11 @@ spec:
       containerConcurrency: 0
       containers:
         - image: quay.io/kevindubois/cameldemo-processor:1.0.1
+          envFrom:
+            - configMapRef:
+                name: appconfig
+            - secretRef:
+                name: postgresql
           livenessProbe:
             failureThreshold: 3
             httpGet:
