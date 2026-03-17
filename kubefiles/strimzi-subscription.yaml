@@ -6,6 +6,8 @@ metadata:
     operators.coreos.com/amq-streams.openshift-operators: ''
   name: amq-streams
   namespace: openshift-operators
+  annotations:
+    argocd.argoproj.io/sync-wave: "0"
 spec:
   channel: stable
   installPlanApproval: Automatic

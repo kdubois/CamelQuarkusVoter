@@ -2,6 +2,8 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   name: appconfig
+  annotations:
+    argocd.argoproj.io/sync-wave: "3"
 data:
   KAFKA_BOOTSTRAP_SERVERS: "my-cluster-kafka-bootstrap:9092"
   # For internal cluster communication (recommended):

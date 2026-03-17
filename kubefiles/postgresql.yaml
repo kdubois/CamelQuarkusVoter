@@ -2,6 +2,8 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: postgresql
+  annotations:
+    argocd.argoproj.io/sync-wave: "3"
 spec:
   selector:
     matchLabels:
@@ -32,6 +34,8 @@ kind: Service
 apiVersion: v1
 metadata:
   name: postgresql
+  annotations:
+    argocd.argoproj.io/sync-wave: "3"
 spec:
   ports:
     - name: pgsql
@@ -46,6 +50,8 @@ apiVersion: v1
 kind: Secret
 metadata:
   name: postgresql
+  annotations:
+    argocd.argoproj.io/sync-wave: "3"
 type: Opaque
 stringData:
   database-user: "quarkus"

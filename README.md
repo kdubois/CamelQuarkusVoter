@@ -113,7 +113,12 @@ This creates an ArgoCD Application that:
 - Syncs changes from the main branch
 - Auto-creates the `cameldemo` namespace
 
-ArgoCD will use the same kustomization.yaml to deploy all resources in the correct order.
+dArgoCD will deploy resources in the correct order using sync waves:
+- **Wave 0**: Operators (Serverless, Strimzi)
+- **Wave 1**: Knative Serving (after operators are ready)
+- **Wave 2**: Kafka cluster (after Strimzi is ready)
+- **Wave 3**: PostgreSQL and ConfigMap
+- **Wave 4**: Application services (after all infrastructure is ready)
 
 ### After Deployment
 
