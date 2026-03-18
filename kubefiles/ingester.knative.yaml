@@ -4,7 +4,7 @@ kind: ServiceAccount
 metadata:
   labels:
     app.kubernetes.io/name: cameldemo-ingester
-    app.kubernetes.io/version: 1.0.1
+    app.kubernetes.io/version: 1.0.2
   name: cameldemo-ingester
   namespace: cameldemo
   annotations:
@@ -15,7 +15,7 @@ kind: Service
 metadata:
   labels:
     app.kubernetes.io/name: cameldemo-ingester
-    app.kubernetes.io/version: 1.0.1
+    app.kubernetes.io/version: 1.0.2
     app.kubernetes.io/part-of: cameldemo
   name: cameldemo-ingester
   namespace: cameldemo
@@ -26,7 +26,7 @@ spec:
     metadata:
       labels:
         app.kubernetes.io/name: cameldemo-ingester
-        app.kubernetes.io/version: 1.0.1
+        app.kubernetes.io/version: 1.0.2
         app.kubernetes.io/part-of: cameldemo
       annotations:
         autoscaling.knative.dev/target: '5'
@@ -35,8 +35,8 @@ spec:
     spec:
       containerConcurrency: 2
       containers:
-        - image: quay.io/kevindubois/cameldemo-ingester:1.0.1
-          imagePullPolicy: IfNotPresent
+        - image: image-registry.openshift-image-registry.svc:5000/cameldemo/cameldemo-ingester:1.0.2
+          imagePullPolicy: Always
           envFrom:
             - configMapRef:
                 name: appconfig

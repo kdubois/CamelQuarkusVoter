@@ -26,7 +26,7 @@ services:
       KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://votes-kafka:9092
 
   cameldemo-ui:
-    image: quay.io/kevindubois/cameldemo-ui:1.0.1
+    image: quay.io/kevindubois/cameldemo-ui:1.0.2
     pull_policy: build
     build:
       context: ./ui
@@ -51,7 +51,7 @@ services:
           - cameldemo
 
   cameldemo-ingester:
-    image: quay.io/kevindubois/cameldemo-ingester:1.0.1
+    image: quay.io/kevindubois/cameldemo-ingester:1.0.2
     pull_policy: build
     build:
       context: ./ingester
@@ -74,7 +74,7 @@ services:
           - cameldemo
 
   cameldemo-processor:
-    image: quay.io/kevindubois/cameldemo-processor:1.0.1
+    image: quay.io/kevindubois/cameldemo-processor:1.0.2
     pull_policy: build
     build:
       context: ./processor

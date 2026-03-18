@@ -38,32 +38,46 @@ public class ResultsResource {
     public TemplateInstance listVotes(@Context UriInfo uriInfo) {
         List<Vote> votes = processorRestClient.getVotes();
 
-        // If URLs are not configured or are localhost, construct them from the current request
-        String finalIngesterUrl = ingesterUrl;
-        String finalProcessorUrl = processorUrl;
+        // For frontend JavaScript, use empty string to indicate relative URLs (same origin)
+        // This avoids CORS issues by using the UI service as a proxy
+        String finalIngesterUrl = "";
+        String finalProcessorUrl = "";
         
-        boolean needsAutoDetect = ingesterUrl == null || ingesterUrl.isEmpty() ||
-                                  ingesterUrl.contains("localhost") || ingesterUrl.contains("127.0.0.1");
+        // Check if we need to use external URLs (for direct backend calls)
+        boolean needsExternalUrls = ingesterUrl != null && !ingesterUrl.isEmpty() &&
+                                    !ingesterUrl.contains("localhost") && !ingesterUrl.contains("127.0.0.1") &&
+                                    !ingesterUrl.contains(".svc.cluster.local");
         
-        if (needsAutoDetect) {
+        if (needsExternalUrls) {
+            // Use configured external URLs if available
+            finalIngesterUrl = ingesterUrl;
+            finalProcessorUrl = processorUrl;
+        } else {
+            // Auto-detect external URLs based on current request
             String scheme = uriInfo.getBaseUri().getScheme();
             String host = uriInfo.getBaseUri().getHost();
             
-            // Construct URLs based on Knative service naming convention
             if (host.contains(".")) {
                 // Extract domain from current host (e.g., cameldemo-ui-cameldemo.apps.example.com -> apps.example.com)
                 String domain = host.substring(host.indexOf(".") + 1);
                 finalIngesterUrl = scheme + "://cameldemo-ingester." + domain;
                 finalProcessorUrl = scheme + "://cameldemo-processor." + domain;
-            } else {
-                // Fallback to configured values if we can't determine the domain
-                finalIngesterUrl = ingesterUrl;
-                finalProcessorUrl = processorUrl;
             }
         }
 
         return results.data("votes", votes)
                       .data("ingesterUrl", finalIngesterUrl)
                       .data("processorUrl", finalProcessorUrl);
+    }
+
+    /**
+     * Proxy endpoint for frontend JavaScript to call /getresults
+     * This avoids CORS issues by allowing the frontend to use relative URLs
+     */
+    @GET
+    @Path("/getresults")
+    @Produces(MediaType.APPLICATION_JSON)
+    public List<Vote> getResults() {
+        return processorRestClient.getVotes();
     }
 }

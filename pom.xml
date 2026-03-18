@@ -6,7 +6,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>com.kevindubois</groupId>
   <artifactId>cameldemo</artifactId>
-  <version>1.0.1</version>
+  <version>1.0.2</version>
   <packaging>pom</packaging>
   <modules>
     <module>ingester</module>
@@ -15,15 +15,15 @@
     <!--<module>twitter</module>-->
   </modules>
   <properties>
-    <cameldemo.version>1.0.1</cameldemo.version>
-    <compiler-plugin.version>3.10.1</compiler-plugin.version>
-    <maven.compiler.release>21</maven.compiler.release>
+    <cameldemo.version>1.0.2</cameldemo.version>
+    <compiler-plugin.version>3.14.0</compiler-plugin.version>
+    <maven.compiler.release>25</maven.compiler.release>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
     <quarkus.platform.artifact-id>quarkus-bom</quarkus.platform.artifact-id>
     <quarkus.platform.group-id>io.quarkus</quarkus.platform.group-id>
-    <quarkus.platform.version>3.22.1</quarkus.platform.version>
-    <surefire-plugin.version>3.2.5</surefire-plugin.version>
+    <quarkus.platform.version>3.32.3</quarkus.platform.version>
+    <surefire-plugin.version>3.5.3</surefire-plugin.version>
     <wiremock.version>3.0.3</wiremock.version>
   </properties>
   <developers>
@@ -56,6 +56,12 @@
       </dependency>
     </dependencies>
   </dependencyManagement>
+  <dependencies>
+    <dependency>
+      <groupId>io.quarkus</groupId>
+      <artifactId>quarkus-container-image-openshift</artifactId>
+    </dependency>
+  </dependencies>
   <build>
     <plugins>
       <plugin>
@@ -109,6 +115,7 @@
         <skipITs>false</skipITs>
         <quarkus.native.enabled>true</quarkus.native.enabled>
         <quarkus.package.jar.enabled>false</quarkus.package.jar.enabled>
+        <quarkus.native.container-build>true</quarkus.native.container-build>
       </properties>
     </profile>
     <profile>

@@ -4,7 +4,7 @@ kind: ServiceAccount
 metadata:
   labels:
     app.kubernetes.io/name: cameldemo-processor
-    app.kubernetes.io/version: 1.0.1
+    app.kubernetes.io/version: 1.0.2
   name: cameldemo-processor
   namespace: cameldemo
   annotations:
@@ -15,7 +15,7 @@ kind: Service
 metadata:
   labels:
     app.kubernetes.io/name: cameldemo-processor
-    app.kubernetes.io/version: 1.0.1
+    app.kubernetes.io/version: 1.0.2
     app.kubernetes.io/part-of: cameldemo
   name: cameldemo-processor
   namespace: cameldemo
@@ -26,14 +26,15 @@ spec:
     metadata:
       labels:
         app.kubernetes.io/name: cameldemo-processor
-        app.kubernetes.io/version: 1.0.1
+        app.kubernetes.io/version: 1.0.2
       annotations:
         autoscaling.knative.dev/minScale: '1'
         autoscaling.knative.dev/maxScale: '1'
     spec:
       containerConcurrency: 0
       containers:
-        - image: quay.io/kevindubois/cameldemo-processor:1.0.1
+        - image: image-registry.openshift-image-registry.svc:5000/cameldemo/cameldemo-processor:1.0.2
+          imagePullPolicy: Always
           envFrom:
             - configMapRef:
                 name: appconfig
@@ -48,7 +49,6 @@ spec:
             periodSeconds: 30
             successThreshold: 1
             timeoutSeconds: 10
-          imagePullPolicy: IfNotPresent
           name: cameldemo-processor
           ports:
             - containerPort: 8080
