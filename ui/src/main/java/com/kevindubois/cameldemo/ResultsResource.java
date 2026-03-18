@@ -38,32 +38,10 @@ public class ResultsResource {
     public TemplateInstance listVotes(@Context UriInfo uriInfo) {
         List<Vote> votes = processorRestClient.getVotes();
 
-        // For frontend JavaScript, use empty string to indicate relative URLs (same origin)
-        // This avoids CORS issues by using the UI service as a proxy
+        // For frontend JavaScript, always use relative URLs (empty string) to avoid CORS and mixed content issues
+        // The UI service provides proxy endpoints (/favstackxform and /getresults) for frontend calls
         String finalIngesterUrl = "";
         String finalProcessorUrl = "";
-        
-        // Check if we need to use external URLs (for direct backend calls)
-        boolean needsExternalUrls = ingesterUrl != null && !ingesterUrl.isEmpty() &&
-                                    !ingesterUrl.contains("localhost") && !ingesterUrl.contains("127.0.0.1") &&
-                                    !ingesterUrl.contains(".svc.cluster.local");
-        
-        if (needsExternalUrls) {
-            // Use configured external URLs if available
-            finalIngesterUrl = ingesterUrl;
-            finalProcessorUrl = processorUrl;
-        } else {
-            // Auto-detect external URLs based on current request
-            String scheme = uriInfo.getBaseUri().getScheme();
-            String host = uriInfo.getBaseUri().getHost();
-            
-            if (host.contains(".")) {
-                // Extract domain from current host (e.g., cameldemo-ui-cameldemo.apps.example.com -> apps.example.com)
-                String domain = host.substring(host.indexOf(".") + 1);
-                finalIngesterUrl = scheme + "://cameldemo-ingester." + domain;
-                finalProcessorUrl = scheme + "://cameldemo-processor." + domain;
-            }
-        }
 
         return results.data("votes", votes)
                       .data("ingesterUrl", finalIngesterUrl)
