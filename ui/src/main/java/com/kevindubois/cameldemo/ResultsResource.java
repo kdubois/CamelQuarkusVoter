@@ -38,18 +38,28 @@ public class ResultsResource {
     public TemplateInstance listVotes(@Context UriInfo uriInfo) {
         List<Vote> votes = processorRestClient.getVotes();
 
-        // If URLs are not configured, construct them from the current request
+        // If URLs are not configured or are localhost, construct them from the current request
         String finalIngesterUrl = ingesterUrl;
         String finalProcessorUrl = processorUrl;
         
-        if (ingesterUrl == null || ingesterUrl.isEmpty()) {
-            String baseUrl = uriInfo.getBaseUri().toString().replaceAll("/+$", "");
+        boolean needsAutoDetect = ingesterUrl == null || ingesterUrl.isEmpty() ||
+                                  ingesterUrl.contains("localhost") || ingesterUrl.contains("127.0.0.1");
+        
+        if (needsAutoDetect) {
             String scheme = uriInfo.getBaseUri().getScheme();
             String host = uriInfo.getBaseUri().getHost();
             
             // Construct URLs based on Knative service naming convention
-            finalIngesterUrl = scheme + "://cameldemo-ingester." + host.substring(host.indexOf(".") + 1);
-            finalProcessorUrl = scheme + "://cameldemo-processor." + host.substring(host.indexOf(".") + 1);
+            if (host.contains(".")) {
+                // Extract domain from current host (e.g., cameldemo-ui-cameldemo.apps.example.com -> apps.example.com)
+                String domain = host.substring(host.indexOf(".") + 1);
+                finalIngesterUrl = scheme + "://cameldemo-ingester." + domain;
+                finalProcessorUrl = scheme + "://cameldemo-processor." + domain;
+            } else {
+                // Fallback to configured values if we can't determine the domain
+                finalIngesterUrl = ingesterUrl;
+                finalProcessorUrl = processorUrl;
+            }
         }
 
         return results.data("votes", votes)
