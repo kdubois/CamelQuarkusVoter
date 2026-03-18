@@ -12,6 +12,3 @@ resources:
 - ingester.knative.yaml
 - processor.knative.yaml
 - ui.knative.yaml
-- twitter.knative.yaml
-
-# Made with Bob
