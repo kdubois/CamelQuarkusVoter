@@ -147,24 +147,34 @@ cp kubefiles/configs/configmap-example.yaml kubefiles/configs/configmap.yaml
 
 ### Alternative: Deploy with ArgoCD
 
-If you have ArgoCD (OpenShift GitOps) installed on your cluster:
+If you have ArgoCD (OpenShift GitOps) installed on your cluster, you can deploy using the App of Apps pattern which splits infrastructure and application:
 
 ```bash
-kubectl apply -f kubefiles/argo/argo-application.yaml
+kubectl apply -f kubefiles/argo/app-of-apps.yaml
 ```
 
-This creates an ArgoCD Application that:
-- Monitors this GitHub repository's `kubefiles/` directory
-- Automatically deploys all components
-- Syncs changes from the main branch
-- Auto-creates the `cameldemo` namespace
+This creates two ArgoCD Applications:
+- **Infrastructure** (`kubefiles/base/infrastructure`) - Operators, Kafka, PostgreSQL with auto-sync and self-heal
+- **Application** (`kubefiles/base/application`) - Your microservices with auto-sync (no self-heal for safer deployments)
 
-ArgoCD will deploy resources in the correct order using sync waves:
+Or deploy them separately for more control:
+
+```bash
+# Infrastructure first
+kubectl apply -f kubefiles/argo/infrastructure-application.yaml
+
+# Then your apps
+kubectl apply -f kubefiles/argo/application-application.yaml
+```
+
+Resources deploy in order using sync waves:
 - **Wave 0**: Operators (Serverless, Strimzi)
-- **Wave 1**: Knative Serving (after operators are ready)
-- **Wave 2**: Kafka cluster (after Strimzi is ready)
-- **Wave 3**: PostgreSQL and ConfigMap
-- **Wave 4**: Application services (after all infrastructure is ready)
+- **Wave 1**: Knative Serving
+- **Wave 2**: Kafka cluster
+- **Wave 3**: PostgreSQL
+- **Wave 4**: Application services
+
+See [`kubefiles/argo/README.md`](kubefiles/argo/README.md) for more details.
 
 ### After Deployment
 

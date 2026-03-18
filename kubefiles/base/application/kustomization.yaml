@@ -6,7 +6,7 @@ kind: Kustomization
 
 resources:
 # Application configuration
-- ../../configs/configmap-example.yaml
+- configmap.yaml
 
 # Application services
 - ../../ingester.knative.yaml
