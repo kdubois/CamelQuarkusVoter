@@ -9,9 +9,9 @@ resources:
 - configmap.yaml
 
 # Application services
-- ../../ingester.knative.yaml
-- ../../processor.knative.yaml
-- ../../ui.knative.yaml
-- ../../twitter.knative.yaml
+- ingester.knative.yaml
+- processor.knative.yaml
+- ui.knative.yaml
+- twitter.knative.yaml
 
 # Made with Bob

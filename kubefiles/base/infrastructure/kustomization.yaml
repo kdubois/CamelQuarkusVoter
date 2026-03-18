@@ -6,16 +6,16 @@ kind: Kustomization
 
 resources:
 # Operators (sync wave 0)
-- ../../serverless-subscription.yaml
-- ../../strimzi-subscription.yaml
+- serverless-subscription.yaml
+- strimzi-subscription.yaml
 
 # Knative Serving (sync wave 1 - requires serverless operator)
-- ../../knative-serving.yaml
+- knative-serving.yaml
 
 # Kafka cluster (sync wave 2 - requires strimzi operator)
-- ../../kafka-strimzi.yaml
+- kafka-strimzi.yaml
 
 # Database (sync wave 3 - includes postgresql secret)
-- ../../postgresql.yaml
+- postgresql.yaml
 
 # Made with Bob
