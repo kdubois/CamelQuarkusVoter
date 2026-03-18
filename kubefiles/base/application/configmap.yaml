@@ -1,0 +1,19 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: appconfig
+  namespace: cameldemo
+  annotations:
+    argocd.argoproj.io/sync-wave: "3"
+data:
+  KAFKA_BOOTSTRAP_SERVERS: "my-cluster-kafka-bootstrap:9092"
+  # Use internal Knative service URLs for backend-to-backend communication
+  # The UI service provides proxy endpoints for frontend JavaScript calls
+  ingester.url: "http://cameldemo-ingester.cameldemo.svc.cluster.local"
+  processor.url: "http://cameldemo-processor.cameldemo.svc.cluster.local"
+  
+  # Alternative: Use external URLs if services need to be accessed from outside the cluster
+  # ingester.url: "https://cameldemo-ingester-cameldemo.apps.<cluster-domain>"
+  # processor.url: "https://cameldemo-processor-cameldemo.apps.<cluster-domain>"
+
+# Made with Bob
