@@ -71,6 +71,46 @@ You can compile the respective applications into a native binary using:
 mvn package -Dnative
 ```
 
+## Building and Pushing Container Images
+
+### Using the Build Script
+
+The project includes a `build` native binary (compiled from `build.java`) that simplifies building and pushing container images:
+
+```bash
+# Build all modules for OpenShift
+./build
+
+# Build specific module
+./build -p ingester
+
+# Build with Podman (local only)
+./build -b podman
+
+# Build with Podman and push to registry
+./build -b podman --push -r quay.io -g yourusername
+
+# Build native images (always uses container-based Mandrel for cross-platform compatibility)
+./build -n
+```
+
+**Options:**
+- `-p, --project`: Select module(s) - `all` (default), `ingester`, `processor`, `ui`, `twitter`
+- `-b, --build-mode`: Build location - `openshift` (default), `podman`
+- `-n, --native`: Enable native compilation (always uses container-based Mandrel)
+- `-r, --registry`: Container registry for podman mode (default: `quay.io`)
+- `-g, --group`: Container image group/namespace for podman mode (default: `kevindubois`)
+- `--push`: Push images to registry in podman mode
+- `-h, --help`: Show help
+
+**Important Notes:**
+- For OpenShift mode, ensure you're logged in (`oc login`)
+- For podman push, ensure you're logged in to the registry (e.g., `podman login quay.io`)
+- **Native builds always use container-based compilation (Mandrel)** for cross-platform compatibility
+  - This ensures Linux binaries are built for container images (required for OpenShift/Podman)
+  - Works on macOS, Windows, and Linux without needing local GraalVM installation
+  - Requires Docker or Podman to be running on your machine
+
 ## Deploy to OpenShift
 
 ### One-Command Deployment with Kustomize
@@ -89,6 +129,12 @@ This will deploy:
 - PostgreSQL database with credentials
 - ConfigMap with Kafka bootstrap servers and internal service URLs
 - Application services: ingester, processor, and UI
+
+**Container Images:** By default, the deployment uses pre-built images from quay.io, so you can test the application without building anything. To use OpenShift's internal registry instead (after building your own images), use:
+
+```bash
+kubectl apply -k kubefiles/overlays/openshift/
+```
 
 **Note:** The operators may take a few minutes to install. If the Kafka cluster or Knative services fail initially, wait for the operators to be ready and re-run the command.
 

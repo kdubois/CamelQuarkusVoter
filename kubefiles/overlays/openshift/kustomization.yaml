@@ -1,0 +1,34 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+# Use OpenShift internal registry images
+# Usage: kubectl apply -k kubefiles/overlays/openshift
+
+resources:
+- ../../ingester.knative.yaml
+- ../../processor.knative.yaml
+- ../../ui.knative.yaml
+- ../../twitter.knative.yaml
+- ../../serverless-subscription.yaml
+- ../../strimzi-subscription.yaml
+- ../../knative-serving.yaml
+- ../../kafka-strimzi.yaml
+- ../../postgresql.yaml
+- ../../configs/configmap-example.yaml
+
+# Replace quay.io images with OpenShift internal registry images
+images:
+- name: quay.io/kdubois/cameldemo-ingester
+  newName: image-registry.openshift-image-registry.svc:5000/cameldemo/cameldemo-ingester
+  newTag: "1.0.2"
+- name: quay.io/kdubois/cameldemo-processor
+  newName: image-registry.openshift-image-registry.svc:5000/cameldemo/cameldemo-processor
+  newTag: "1.0.2"
+- name: quay.io/kdubois/cameldemo-ui
+  newName: image-registry.openshift-image-registry.svc:5000/cameldemo/cameldemo-ui
+  newTag: "1.0.2"
+- name: quay.io/kdubois/cameldemo-twitter
+  newName: image-registry.openshift-image-registry.svc:5000/cameldemo/cameldemo-twitter
+  newTag: "1.0.2"
+
+# Made with Bob

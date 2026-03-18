@@ -1,6 +1,9 @@
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 
+# Default configuration uses quay.io images (ready to deploy without building)
+# To use OpenShift internal registry instead: kubectl apply -k overlays/openshift
+
 resources:
 # Operators (install first)
 - serverless-subscription.yaml
@@ -13,7 +16,7 @@ resources:
 - postgresql.yaml
 # Application config
 - configs/configmap-example.yaml
-# Application services
+# Application services (using quay.io images by default)
 - ingester.knative.yaml
 - processor.knative.yaml
 - ui.knative.yaml

@@ -35,7 +35,7 @@ spec:
     spec:
       containerConcurrency: 2
       containers:
-        - image: image-registry.openshift-image-registry.svc:5000/cameldemo/cameldemo-ingester:1.0.2
+        - image: quay.io/kdubois/cameldemo-ingester:1.0.2
           imagePullPolicy: Always
           envFrom:
             - configMapRef:
