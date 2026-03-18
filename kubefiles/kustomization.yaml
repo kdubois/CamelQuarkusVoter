@@ -9,7 +9,7 @@ resources:
 - knative-serving.yaml
 # Kafka cluster (requires strimzi operator)
 - kafka-strimzi.yaml
-# Database (includes postgresql secret)
+# Database (includes dummy postgresql secret - don't do this in production)
 - postgresql.yaml
 # Application config
 - configs/configmap-example.yaml

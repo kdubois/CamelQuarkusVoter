@@ -30,7 +30,7 @@ function buttonClick(shortname){
         console.log( "vote cast for " + shortname);
 
         $.post({
-          url: ingester_url+"/favstackxform",
+          url: ingester_url + "/favstackxform",
           data: {"shortname": shortname},
           type: "POST",
           crossDomain: true,
@@ -40,12 +40,12 @@ function buttonClick(shortname){
 }
 
 var getData = function () {
-  $.getJSON( processor_url+"/getresults", { 
-    format: 'jsonp', 
+  $.getJSON( processor_url + "/getresults", {
+    format: 'jsonp',
     dataType: 'jsonp',
-    crossDomain: true,  
-    }, 
-    function(data){      
+    crossDomain: true,
+    },
+    function(data){
       var xValues = [];
       var yValues = [];
       var i = 1;
@@ -53,18 +53,18 @@ var getData = function () {
       myChart.data.datasets[0].data = [];
       $(data).each(
         function(){
-          $("#"+this.shortname+" .position").html(i);
-          $("#"+this.shortname+" .fullname").html(this.fullname);
-          $("#"+this.shortname+" .counter").html(this.counter);            
+          $("#" + this.shortname + " .position").html(i);
+          $("#" + this.shortname + " .fullname").html(this.fullname);
+          $("#" + this.shortname + " .counter").html(this.counter);
            
           myChart.data.labels.push(this.fullname);
           myChart.data.datasets[0].data.push(this.counter);
           myChart.update();
           i++;
         }
-      );            
+      );
     }
-  );  
+  );
 }
 
 getData;

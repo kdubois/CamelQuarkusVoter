@@ -7,14 +7,15 @@
 
     <!-- CSS ... -->
     <link rel="stylesheet" href="default.css">
+    <link rel="icon" type="image/x-icon" href="favicon.ico">
 
     <title>Votes</title>
 
     <script src="https://code.jquery.com/jquery-3.6.1.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js"></script>
     <script>
-      var ingester_url='{config:property("ingester.url")}';
-      var processor_url='{config:property("processor.url")}';
+      var ingester_url='{ingesterUrl}';
+      var processor_url='{processorUrl}';
     </script>
     
   </head>
