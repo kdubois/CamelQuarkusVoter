@@ -6,7 +6,6 @@ metadata:
 spec:
   destination:
     server: https://kubernetes.default.svc
-    namespace: cameldemo
   project: default
   source:
     path: kubefiles/base/infrastructure
