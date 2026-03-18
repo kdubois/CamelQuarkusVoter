@@ -1,0 +1,21 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+# Infrastructure components (operators, middleware, databases)
+# Sync waves 0-3
+
+resources:
+# Operators (sync wave 0)
+- ../../serverless-subscription.yaml
+- ../../strimzi-subscription.yaml
+
+# Knative Serving (sync wave 1 - requires serverless operator)
+- ../../knative-serving.yaml
+
+# Kafka cluster (sync wave 2 - requires strimzi operator)
+- ../../kafka-strimzi.yaml
+
+# Database (sync wave 3 - includes postgresql secret)
+- ../../postgresql.yaml
+
+# Made with Bob

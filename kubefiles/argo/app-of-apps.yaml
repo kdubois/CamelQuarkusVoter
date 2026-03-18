@@ -1,0 +1,25 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: camelquarkusvoter
+  namespace: openshift-gitops
+spec:
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: openshift-gitops
+  project: default
+  source:
+    path: kubefiles/argo
+    repoURL: https://github.com/kdubois/camelquarkusvoter.git
+    targetRevision: main
+    directory:
+      recurse: false
+      include: '{infrastructure,application}-application.yaml'
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
+
+# Made with Bob
