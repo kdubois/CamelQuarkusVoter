@@ -27,7 +27,7 @@ spec:
     spec:
       containerConcurrency: 0
       containers:
-        - image: quay.io/kdubois/cameldemo-twitter:1.0.2
+        - image: quay.io/kevindubois/cameldemo-twitter:1.0.2
           imagePullPolicy: Always
           livenessProbe:
             failureThreshold: 3

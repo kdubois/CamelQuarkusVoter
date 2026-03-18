@@ -18,16 +18,16 @@ resources:
 
 # Replace quay.io images with OpenShift internal registry images
 images:
-- name: quay.io/kdubois/cameldemo-ingester
+- name: quay.io/kevindubois/cameldemo-ingester
   newName: image-registry.openshift-image-registry.svc:5000/cameldemo/cameldemo-ingester
   newTag: "1.0.2"
-- name: quay.io/kdubois/cameldemo-processor
+- name: quay.io/kevindubois/cameldemo-processor
   newName: image-registry.openshift-image-registry.svc:5000/cameldemo/cameldemo-processor
   newTag: "1.0.2"
-- name: quay.io/kdubois/cameldemo-ui
+- name: quay.io/kevindubois/cameldemo-ui
   newName: image-registry.openshift-image-registry.svc:5000/cameldemo/cameldemo-ui
   newTag: "1.0.2"
-- name: quay.io/kdubois/cameldemo-twitter
+- name: quay.io/kevindubois/cameldemo-twitter
   newName: image-registry.openshift-image-registry.svc:5000/cameldemo/cameldemo-twitter
   newTag: "1.0.2"
 

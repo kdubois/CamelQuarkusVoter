@@ -35,7 +35,7 @@ spec:
     spec:
       containerConcurrency: 2
       containers:
-        - image: quay.io/kdubois/cameldemo-ingester:1.0.2
+        - image: quay.io/kevindubois/cameldemo-ingester:1.0.2
           imagePullPolicy: Always
           envFrom:
             - configMapRef:
