@@ -49,6 +49,12 @@ public class build implements Callable<Integer> {
     private boolean nativeMode = false;
 
     @Option(
+        names = {"--parallel"},
+        description = "Build modules in parallel (default: ${DEFAULT-VALUE})"
+    )
+    private boolean parallel = false;
+
+    @Option(
         names = {"-b", "--build-mode"},
         description = "Build location. Valid values: ${COMPLETION-CANDIDATES}. Default: ${DEFAULT-VALUE}",
         defaultValue = "openshift"
@@ -103,6 +109,7 @@ public class build implements Callable<Integer> {
             printInfo("  Native build: container-based (Mandrel) for cross-platform compatibility");
         }
         printInfo("  Build mode: " + buildMode);
+        printInfo("  Parallel: " + parallel);
         if (buildMode == BuildMode.podman) {
             printInfo("  Registry: " + registry);
             printInfo("  Group: " + group);
@@ -111,12 +118,11 @@ public class build implements Callable<Integer> {
         System.out.println();
 
         // Build each module
-        boolean allSuccess = true;
-        for (String module : modules) {
-            if (!buildModule(module)) {
-                allSuccess = false;
-                break;
-            }
+        boolean allSuccess;
+        if (parallel && modules.size() > 1) {
+            allSuccess = buildModulesParallel(modules);
+        } else {
+            allSuccess = buildModulesSequential(modules);
         }
 
         if (allSuccess) {
@@ -163,6 +169,50 @@ public class build implements Callable<Integer> {
         }
     }
 
+    private boolean buildModulesSequential(List<String> modules) {
+        for (String module : modules) {
+            if (!buildModule(module)) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    private boolean buildModulesParallel(List<String> modules) {
+        printInfo("Building " + modules.size() + " modules in parallel...");
+        System.out.println();
+        
+        List<Thread> threads = new ArrayList<>();
+        List<Boolean> results = new ArrayList<>();
+        
+        for (String module : modules) {
+            results.add(false); // Initialize with false
+            int index = results.size() - 1;
+            
+            Thread thread = new Thread(() -> {
+                boolean success = buildModule(module);
+                synchronized (results) {
+                    results.set(index, success);
+                }
+            });
+            threads.add(thread);
+            thread.start();
+        }
+        
+        // Wait for all threads to complete
+        for (Thread thread : threads) {
+            try {
+                thread.join();
+            } catch (InterruptedException e) {
+                printError("Build interrupted: " + e.getMessage());
+                return false;
+            }
+        }
+        
+        // Check if all builds succeeded
+        return results.stream().allMatch(r -> r);
+    }
+
     private boolean buildModule(String module) {
         printModuleHeader(module);
 
@@ -202,6 +252,8 @@ public class build implements Callable<Integer> {
             // This ensures Linux binaries are built for container images (OpenShift/Podman)
             // and provides cross-platform compatibility (works on macOS, Windows, Linux)
             command.add("-Dquarkus.native.container-build=true");
+            // Force AMD64 platform for compatibility with most cloud platforms
+            command.add("-Dquarkus.native.container-runtime-options=--platform=linux/amd64");
         }
 
         // Execute the command
@@ -261,6 +313,10 @@ public class build implements Callable<Integer> {
 
     private void printInfo(String message) {
         System.out.println(YELLOW + message + RESET);
+    }
+
+    private void printWarning(String message) {
+        System.out.println(YELLOW + "⚠️  " + message + RESET);
     }
 
     public static void main(String... args) {

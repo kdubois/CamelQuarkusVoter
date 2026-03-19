@@ -12,7 +12,7 @@ x=1
 
 while [ $x -le $max ]
 do
-    hey -n 1000 -c 200 -H "Content-Type: application/json" -m POST -d "{\"shortname\":\"openshiftdevspaces\"}" ${URL}/favstack
+    hey -n 1000 -c 200 -H "Content-Type: application/json" -m POST -d "{\"shortname\":\"bob\"}" ${URL}/favstack
     x=$((x+1))
 done;
 
